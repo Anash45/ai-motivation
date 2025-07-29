@@ -1,6 +1,6 @@
 @extends('layouts.holding')
 
-@section('title', 'Coming Soon | MyApp')
+@section('title', 'Coming Soon | VIBELIFTDAILY')
 
 @section('content')
     <main class="main-06 min-vh-100">
