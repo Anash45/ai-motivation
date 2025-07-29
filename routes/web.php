@@ -1,10 +1,19 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
-use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Route;use App\Http\Controllers\SubscriberController;
+
+Route::post('/subscribe', [SubscriberController::class, 'subscribe'])->name('subscribe');
+
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('holding.index');
+});
+Route::get('/landing1', function () {
+    return view('holding.landing1');
+});
+Route::get('/landing2', function () {
+    return view('holding.landing2');
 });
 
 Route::get('/dashboard', function () {
