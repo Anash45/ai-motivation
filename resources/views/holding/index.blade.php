@@ -10,7 +10,7 @@
                 <div class="row align-items-center">
                     <div class="col-md-4">
                         <a href="/">
-                            <img src="{{asset("assets/images/logo-03.png")}}" style="height: 50px;"
+                            <img src="{{asset("assets/images/logo-01.png")}}" style="height: 50px;"
                                 alt="Laravel Logo">
                         </a>
                     </div>

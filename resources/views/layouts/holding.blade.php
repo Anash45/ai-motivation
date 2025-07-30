@@ -9,7 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="author" content="SoonLaunch">
 
-    <link rel="shortcut icon" type="image/x-icon" href="/assets/images/logo-03.png">
+    <link rel="shortcut icon" type="image/x-icon" href="/assets/images/logo-01.png">
 
     <!-- ========================= CSS here ========================= -->
     <link rel="stylesheet" href="/holding-assets/css/bootstrap-4.5.0.min.css">
