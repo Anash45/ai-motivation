@@ -77,6 +77,7 @@
                             `;
 
                     if (data.status === "success") {
+                        document.getElementById("email").value = "";
                         setTimeout(() => {
                             const alert = document.getElementById("subscribe-alert");
                             if (alert) {

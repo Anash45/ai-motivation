@@ -1,0 +1,29 @@
+.color-primary-1{
+    color: #60e0fd !important;
+}
+
+.bg-dark-alpha:before, .bg-dark-alpha .YTPOverlay:before{
+    opacity: 0.75 !important;
+}
+
+.nav-logo-wrap .logo img{
+    width: auto !important;
+    height: 45px !important;
+}
+
+.btn-mod.btn-color{
+    color: #1b1b1b !important;
+}
+
+.btn-mod.btn-color.btn-hover-anim:before{
+    background-color: #fe93c7 !important;
+    color: #1b1b1b !important;
+}
+
+.btn-mod.btn-color.btn-hover-anim:hover{
+    border-color: #fe93c7 !important;
+}
+
+main{
+    min-height: calc(100vh - (65px + 30.39px));
+}
