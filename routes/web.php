@@ -4,13 +4,14 @@ use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SubscriberController;
-
+use App\Http\Controllers\OpenAIQuoteController;
 use App\Http\Controllers\Frontend\Auth\LoginController as UserLogin;
 use App\Http\Controllers\Frontend\Auth\RegisterController as UserRegister;
 
 
 Route::post('/subscribe', [SubscriberController::class, 'subscribe'])->name('subscribe');
-
+Route::get('/quote/{uuid}', [OpenAIQuoteController::class, 'show'])->name('quotes.show');
+Route::get('/generate-quote/{user}', [OpenAIQuoteController::class, 'generate']);
 
 Route::get('/', function () {
     return view('holding.index');
