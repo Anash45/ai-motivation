@@ -86,7 +86,7 @@
                     </div>
                 @endif
 
-                <p class="text-muted text-sm mb-0 text-small">Quotes are sent automatically to your E-mail everyday at 7:00 am.</p>
+                <p class="text-muted text-sm mb-0 text-small">Your personalised quotes are sent automatically to your email every day at 7:00 am.</p>
                 {{-- Profile Form --}}
                 <form method="POST" novalidate class="needs-validation mt-4" action="{{ route('dashboard.update') }}">
                     @csrf
