@@ -13,7 +13,7 @@
                     @csrf
                     <div class="d-grid">
                         <button class="btn btn-primary btn-lg" type="submit">
-                            Subscribe for $9.99/month
+                            Subscribe for &pound;9.99/month
                         </button>
                     </div>
                 </form>

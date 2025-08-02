@@ -30,7 +30,7 @@ class SubscriptionController extends Controller
             'mode' => 'subscription',
             'line_items' => [
                 [
-                    'price' => 'price_1RrTDyRqAOa4P3rrPlpEjPj6', // Your actual recurring price ID
+                    'price' => env('STRIPE_PRICE_ID'),
                     'quantity' => 1,
                 ]
             ],
