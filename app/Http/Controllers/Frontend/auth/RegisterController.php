@@ -47,7 +47,7 @@ class RegisterController extends Controller
             'trial_ends_at' => $request->plan_type === 'trial' ? now()->addDays(7) : null,
         ]);
 
-        event(new Registered($user)); // For email verification
+        // event(new Registered($user)); // For email verification
 
         Auth::login($user); // Automatically log them in
 

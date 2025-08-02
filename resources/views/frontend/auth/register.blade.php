@@ -16,7 +16,6 @@
                                     action="{{ route('user.register') }}">
                                     @csrf
 
-                                    @include('partials.messages')
                                     <div class="form-group">
                                         <label for="name" class="visually-hidden">Name</label>
                                         <input type="text" name="name" id="name" class="input-lg input-circle form-control"
