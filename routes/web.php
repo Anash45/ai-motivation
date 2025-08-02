@@ -10,17 +10,20 @@ use App\Http\Controllers\ContactController;
 use App\Http\Controllers\OpenAIQuoteController;
 use App\Http\Controllers\Frontend\Auth\LoginController as UserLogin;
 use App\Http\Controllers\Frontend\Auth\RegisterController as UserRegister;
+use App\Http\Controllers\QuoteGenerationController;
 
 Route::get('/server-time', function () {
     return now()->toDateTimeString();
 });
+
+
 Route::get('/run-daily-quotes', function () {
     if (request()->header('X-CRON-KEY') !== env('CRON_SECRET_KEY')) {
-        abort(403);
+        abort(403, 'Unauthorized');
     }
 
-    Artisan::call('quotes:generate-daily');
-    return 'Daily quotes generated';
+    // Call the controller method directly
+    return app(QuoteGenerationController::class)->generate();
 });
 
 
