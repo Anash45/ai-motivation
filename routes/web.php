@@ -11,6 +11,19 @@ use App\Http\Controllers\OpenAIQuoteController;
 use App\Http\Controllers\Frontend\Auth\LoginController as UserLogin;
 use App\Http\Controllers\Frontend\Auth\RegisterController as UserRegister;
 
+Route::get('/server-time', function () {
+    return now()->toDateTimeString();
+});
+Route::get('/run-daily-quotes', function () {
+    if (request()->header('X-CRON-KEY') !== env('CRON_SECRET_KEY')) {
+        abort(403);
+    }
+
+    Artisan::call('quotes:generate-daily');
+    return 'Daily quotes generated';
+});
+
+
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/my-dashboard', [DashboardController::class, 'updateProfile'])->name('dashboard.update');
     Route::post('/cancel-subscription', [SubscriptionController::class, 'cancelSubscription'])->name('subscription.cancel-request');
