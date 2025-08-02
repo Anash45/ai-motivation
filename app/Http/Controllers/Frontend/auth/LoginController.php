@@ -1,6 +1,6 @@
 <?php
 namespace App\Http\Controllers\Frontend\Auth;
- 
+
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -20,26 +20,19 @@ class LoginController extends Controller
         ]);
 
         if (Auth::attempt($credentials)) {
+            $request->session()->regenerate();
+
             $user = Auth::user();
 
             if (!$user->hasVerifiedEmail()) {
-                $user->sendEmailVerificationNotification(); // resend email
-                Auth::logout();
-
-                return redirect()->route('user.login')->withErrors([
-                    'email' => 'Please verify your email. A new verification link has been sent to your email address.',
-                ]);
+                $user->sendEmailVerificationNotification(); // Resend email
+                return redirect()->route('verification.notice'); // Keep them logged in
             }
-
-
-            $request->session()->regenerate();
 
             // Redirect based on user role
-            if ($user->isAdmin()) {
-                return redirect()->intended('/dashboard');
-            }
-
-            return redirect()->intended('/my-dashboard');
+            return $user->isAdmin()
+                ? redirect()->intended('/dashboard')
+                : redirect()->intended('/my-dashboard');
         }
 
         return back()->withErrors([
