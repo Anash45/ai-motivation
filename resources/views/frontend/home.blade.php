@@ -39,7 +39,7 @@
 
                             <div class="local-scroll wow fadeInUp wch-unset" data-wow-delay="0.3s" data-wow-offset="0">
 
-                                <a href="#contact"
+                                <a href="/register"
                                     class="btn btn-mod btn-color btn-large btn-circle btn-hover-anim mb-xs-10">
                                     <span>Start trial</span>
                                 </a>
@@ -183,7 +183,7 @@
 
                         <div class="local-scroll wch-unset">
 
-                            <a href="#contact" class="btn btn-mod btn-color btn-large btn-circle btn-hover-anim mb-xs-10">
+                            <a href="/register" class="btn btn-mod btn-color btn-large btn-circle btn-hover-anim mb-xs-10">
                                 <span>Start trial</span>
                             </a>
 
@@ -463,6 +463,4 @@
         </div>
     </section>
     <!-- End FAQ Section -->
-
-
 @endsection

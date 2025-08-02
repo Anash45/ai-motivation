@@ -1,52 +1,46 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Generated Quote</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <style>
-        body {
-            font-family: 'Segoe UI', sans-serif;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 2rem;
-            background-color: #f0f4f8;
-            color: #333;
-        }
-        .quote-box {
-            background: white;
-            border-radius: 12px;
-            padding: 1.5rem;
-            max-width: 600px;
-            text-align: center;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-        audio {
-            margin-top: 1.5rem;
-            width: 100%;
-        }
-        h2 {
-            margin-bottom: 1rem;
-            font-size: 1.5rem;
-        }
-        .quote {
-            font-size: 1.25rem;
-            font-style: italic;
-        }
-    </style>
-</head>
-<body>
+@extends('layouts.app')
 
-    <div class="quote-box">
-        <h2>Your Daily Motivation</h2>
-        <p class="quote">"{{ $quote }}"</p>
+@section('content')
+    <link rel="stylesheet" href="https://unpkg.com/wavesurfer.js/dist/style.css" />
+    <div class="d-flex justify-content-center align-items-center py-5 text-white px-3">
+        <div class="card quote-box bg-secondary border-0 shadow-lg w-100 my-5" style="max-width: 600px;">
+            <div class="card-body text-center py-5">
 
-        <audio controls>
-            <source src="{{ $audioUrl }}" type="audio/mpeg">
-            Your browser does not support the audio element.
-        </audio>
+                <h2 class="card-title text-info mb-4">Your Daily Motivation</h2>
+
+                <p class="fs-5 fst-italic text-light">"{{ $quote }}"</p>
+
+                <div class="mt-4">
+                    <div id="waveform" class="my-3 rounded" style="height: 100px;"></div>
+                    <div class="text-center">
+                        <button class="btn btn-outline-light" id="playPause">Play / Pause</button>
+                    </div>
+                </div>
+
+                <div class="mt-3 text-white small">
+                    Generated just for you ✨
+                </div>
+            </div>
+        </div>
     </div>
+    <!-- Before closing </body> -->
+    <script src="https://unpkg.com/wavesurfer.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const wavesurfer = WaveSurfer.create({
+                container: '#waveform',
+                waveColor: '#0dcaf0',
+                progressColor: '#198754',
+                height: 80,
+                responsive: true,
+            });
 
-</body>
-</html>
+            wavesurfer.load('{{ $audioUrl }}');
+
+            document.getElementById('playPause').addEventListener('click', () => {
+                wavesurfer.playPause();
+            });
+        });
+
+    </script>
+@endsection

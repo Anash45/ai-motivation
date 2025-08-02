@@ -19,25 +19,51 @@
         <!-- Main Menu -->
         <div class="inner-nav desktop-nav">
             <ul class="clearlist scroll-nav local-scroll">
-                <li><a href="/home#home" class="active">Home</a></li>
-                <li><a href="/home#about">About</a></li>
-                <li><a href="/home#contact">Contact</a></li>
-                <li><a href="/home#faqs">Faqs</a></li>
+                <li><a href="/#home" class="active">Home</a></li>
+                <li><a href="/#about">About</a></li>
+                <li><a href="/#contact">Contact</a></li>
+                <li><a href="/#faqs">Faqs</a></li>
             </ul>
 
             <ul class="items-end clearlist local-scroll d-flex align-items-center">
-                <li class="pb-1">
-                    <a href="/join-vibe" class="opacity-1 no-hover">
-                        <span class="link-hover-anim underline" data-link-animate="y">Start trial</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="/vibe-login" class="opacity-1 btn-hover-anim d-flex flex-column justify-content-center">
-                        <span class="btn btn-mod btn-border-w-light btn-small btn-circle" data-btn-animate="y">Login</span>
-                    </a>
-                </li>
+
+                @guest
+                    {{-- Not logged in: show Join & Login --}}
+                    <li class="pb-1">
+                        <a href="{{ route('user.register') }}" class="opacity-1 no-hover">
+                            <span class="link-hover-anim underline" data-link-animate="y">Start trial</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('user.login') }}"
+                            class="opacity-1 btn-hover-anim d-flex flex-column justify-content-center">
+                            <span class="btn btn-mod btn-border-w-light btn-small btn-circle"
+                                data-btn-animate="y">Login</span>
+                        </a>
+                    </li>
+                @endguest
+
+                @auth
+                    {{-- Logged in: show Dashboard & Logout --}}
+                    <li class="pb-1">
+                        <a href="{{ route('user.dashboard') }}" class="opacity-1 no-hover">
+                            <span class="link-hover-anim underline" data-link-animate="y">My Dashboard</span>
+                        </a>
+                    </li>
+                    <li>
+                        <form method="POST" action="{{ route('logout') }}">
+                            @csrf
+                            <button type="submit"
+                                class="opacity-1 btn-hover-anim btn btn-mod btn-border-w-light btn-small btn-circle"
+                                data-btn-animate="y">
+                                Logout
+                            </button>
+                        </form>
+                    </li>
+                @endauth
 
             </ul>
+
 
         </div>
         <!-- End Main Menu -->

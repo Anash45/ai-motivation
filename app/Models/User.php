@@ -30,7 +30,12 @@ class User extends Authenticatable implements MustVerifyEmail
         'age_range',
         'profession',
         'interests',
+        'plan_type',
+        'is_subscribed',
+        'subscription_ends_at',
+        'stripe_subscription_id'
     ];
+
 
     public function sendEmailVerificationNotification()
     {
@@ -63,4 +68,25 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasMany(Quote::class);
     }
+    public function isOnTrial(): bool
+    {
+        return $this->plan_type === 'trial' && $this->trial_ends_at && now()->lessThan($this->trial_ends_at);
+    }
+
+    /**
+     * Determine if the user is currently subscribed.
+     */
+    public function isSubscribed(): bool
+    {
+        return $this->is_subscribed && $this->subscription_ends_at && now()->lessThan($this->subscription_ends_at);
+    }
+
+    /**
+     * Determine if the subscription has expired.
+     */
+    public function hasExpiredSubscription(): bool
+    {
+        return $this->subscription_ends_at && now()->greaterThanOrEqualTo($this->subscription_ends_at);
+    }
+
 }

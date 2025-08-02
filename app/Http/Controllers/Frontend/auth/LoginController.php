@@ -20,13 +20,31 @@ class LoginController extends Controller
         ]);
 
         if (Auth::attempt($credentials)) {
+            $user = Auth::user();
+
+            if (!$user->hasVerifiedEmail()) {
+                $user->sendEmailVerificationNotification(); // resend email
+                Auth::logout();
+
+                return redirect()->route('user.login')->withErrors([
+                    'email' => 'Please verify your email. A new verification link has been sent to your email address.',
+                ]);
+            }
+
+
             $request->session()->regenerate();
 
-            return redirect()->intended('/dashboard');
+            // Redirect based on user role
+            if ($user->isAdmin()) {
+                return redirect()->intended('/dashboard');
+            }
+
+            return redirect()->intended('/my-dashboard');
         }
 
         return back()->withErrors([
             'email' => 'Invalid credentials.',
         ]);
     }
+
 }

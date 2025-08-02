@@ -59,7 +59,7 @@
                         </div>
                     `;
 
-            fetch("/subscribe", {
+            fetch("/email-subscribe", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

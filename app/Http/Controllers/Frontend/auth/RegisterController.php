@@ -45,14 +45,20 @@ class RegisterController extends Controller
             'password' => bcrypt($request->password),
             'plan_type' => $request->plan_type,
             'trial_ends_at' => $request->plan_type === 'trial' ? now()->addDays(7) : null,
-            'subscribed' => $request->plan_type === 'subscribe',
         ]);
 
-        event(new Registered($user)); // email verification
+        event(new Registered($user)); // For email verification
 
-        return redirect()
-            ->route('user.login') // or wherever you want
-            ->with('success', 'Registration successful. Please verify your email.');
+        Auth::login($user); // Automatically log them in
+
+        if ($request->plan_type === 'subscribe') {
+            // Redirect to payment/subscribe page
+            return redirect()->route('subscription.page');
+        }
+
+        // Trial users go to dashboard
+        return redirect()->route('dashboard')->with('success', 'Welcome! Your 7-day trial has started.');
     }
+
 
 }
