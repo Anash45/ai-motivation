@@ -3,7 +3,7 @@
 
 <head>
 
-    <title>VIBE Lift Daily</title>
+    <title>Vibe Lift Daily</title>
     <meta name="description" content="Resonance &mdash; One & Multi Page Creative Template">
     <meta charset="utf-8">
     <meta name="csrf-token" content="{{ csrf_token() }}">

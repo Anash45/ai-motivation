@@ -11,7 +11,7 @@
 
             <div class="col-md-7 offset-md-1 offset-lg-2 clearfix">
 
-                <b>© VIBE Lift Daily {{ date('Y') }}.</b>
+                <b>© Vibe Lift Daily {{ date('Y') }}.</b>
 
                 <!-- Back to Top Link -->
                 <div class="local-scroll float-end mt-n20 mt-sm-10">

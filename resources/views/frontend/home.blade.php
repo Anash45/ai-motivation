@@ -31,7 +31,7 @@
                             <div class="row">
                                 <div class="col-lg-10">
                                     <p class="section-descr mb-50 mb-sm-40 wow fadeInUp" data-wow-delay="0.15s">
-                                        VIBE Lift Daily delivers AI-powered motivation tailored to you. Our mission is
+                                        Vibe Lift Daily delivers AI-powered motivation tailored to you. Our mission is
                                         to spark action, one quote at a time.
                                     </p>
                                 </div>
@@ -107,7 +107,7 @@
                     <div class="w-100 wow fadeInUp">
 
                         <h2 class="section-caption-slick mb-30 mb-sm-20">
-                            About VIBE Lift Daily
+                            About Vibe Lift Daily
                         </h2>
 
                         <h3 class="section-title mb-30">
@@ -117,7 +117,7 @@
                         </h3>
 
                         <p class="text-gray mb-40">
-                            VIBE Lift Daily blends AI with psychology to craft quotes that truly resonate. We focus on
+                            Vibe Lift Daily blends AI with psychology to craft quotes that truly resonate. We focus on
                             helping individuals build clarity, purpose, and momentum - one message at a time. Every
                             quote is shaped around your lifestyle and mindset, ensuring you get more than inspiration -
                             you get alignment. With a thoughtful user experience and a mission rooted in human impact,
@@ -396,7 +396,7 @@
                     </h3>
 
                     <p class="text-gray mb-0">
-                        Got questions? We've got answers. Here's everything you need to know about how VIBE Lift Daily
+                        Got questions? We've got answers. Here's everything you need to know about how Vibe Lift Daily
                         works, how to get started, and what to expect from your daily dose of motivation.
 
 
@@ -410,7 +410,7 @@
                     <dl class="toggle">
 
                         <dt>
-                            <a href="#">How does VIBE Lift Daily create quotes?
+                            <a href="#">How does Vibe Lift Daily create quotes?
                             </a>
                         </dt>
                         <dd class="black">

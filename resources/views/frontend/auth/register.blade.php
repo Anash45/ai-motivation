@@ -10,7 +10,7 @@
                         <div class="col-md-8 mx-auto">
                             <div class="bg-border-dark round p-4 position-relative z-index-1">
 
-                                <h4 class="h3 mb-40 mb-sm-30 text-center">Join VIBE Lift Daily</h4>
+                                <h4 class="h3 mb-40 mb-sm-30 text-center">Join Vibe Lift Daily</h4>
                                 @include('partials.messages')
                                 <form class="form join-form needs-validation" id="join_form" novalidate method="POST"
                                     action="{{ route('user.register') }}">
@@ -33,7 +33,7 @@
                                     <div class="form-group">
                                         <label for="age_range" class="visually-hidden">Age Range</label>
                                         <select name="age_range" id="age_range" class="input-lg input-circle form-control"
-                                            required aria-required="true">
+                                            >
                                             <option value="" disabled {{ old('age_range') ? '' : 'selected' }}>Age Range
                                             </option>
                                             <option value="under_18" {{ old('age_range') === 'under_18' ? 'selected' : '' }}>
@@ -55,15 +55,14 @@
                                         <label for="profession" class="visually-hidden">Profession</label>
                                         <input type="text" name="profession" id="profession"
                                             class="input-lg input-circle form-control" placeholder="Profession"
-                                            pattern=".{2,100}" required aria-required="true"
+                                            pattern=".{2,100}" 
                                             value="{{ old('profession') }}">
                                     </div>
 
                                     <div class="form-group">
                                         <label for="interests" class="visually-hidden">Interests</label>
                                         <textarea name="interests" id="interests" class="input-lg input-circle form-control"
-                                            placeholder="Your Interests (comma separated)" rows="3" required
-                                            aria-required="true">{{ old('interests') }}</textarea>
+                                            placeholder="Your Interests (comma separated)" rows="3" >{{ old('interests') }}</textarea>
                                     </div>
 
                                     <div class="form-group">

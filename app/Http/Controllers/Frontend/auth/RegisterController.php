@@ -22,9 +22,9 @@ class RegisterController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|min:3|max:100',
             'email' => 'required|email|unique:users,email',
-            'age_range' => 'required|in:under_18,18_24,25_34,35_44,45_54,55_plus',
-            'profession' => 'required|string|min:2|max:100',
-            'interests' => 'required|string',
+            'age_range' => 'nullable|in:under_18,18_24,25_34,35_44,45_54,55_plus',
+            'profession' => 'nullable|string|min:2|max:100',
+            'interests' => 'nullable|string',
             'password' => 'required|string|min:6|confirmed',
             'plan_type' => 'required|in:trial,subscribe',
         ]);

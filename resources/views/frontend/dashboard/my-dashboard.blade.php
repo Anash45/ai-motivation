@@ -86,7 +86,7 @@
                     </div>
                 @endif
 
-                <p class="text-muted text-sm mb-0 text-small">Quotes are sent automatically to your E-mail everyday at 9:00 am.</p>
+                <p class="text-muted text-sm mb-0 text-small">Quotes are sent automatically to your E-mail everyday at 7:00 am.</p>
                 {{-- Profile Form --}}
                 <form method="POST" novalidate class="needs-validation mt-4" action="{{ route('dashboard.update') }}">
                     @csrf
@@ -109,8 +109,7 @@
                     </div>
                     <div class="form-group">
                         <label for="age_range" class="visually-hidden">Age Range</label>
-                        <select name="age_range" id="age_range" class="input-lg input-circle form-control" required
-                            aria-required="true">
+                        <select name="age_range" id="age_range" class="input-lg input-circle form-control">
                             <option value="" disabled {{ old('age_range', $user->age_range) ? '' : 'selected' }}>Age Range
                             </option>
                             <option value="under_18" {{ old('age_range', $user->age_range) === 'under_18' ? 'selected' : '' }}>Under 18</option>
@@ -130,12 +129,12 @@
                     <div class="mb-3">
                         <label class="form-label">Profession</label>
                         <input name="profession" type="text" value="{{ old('profession', $user->profession) }}"
-                            class="form-control bg-secondary text-white" required>
+                            class="form-control bg-secondary text-white">
                     </div>
 
                     <div class="mb-3">
                         <label class="form-label">Interests</label>
-                        <textarea name="interests" class="form-control bg-secondary text-white" required
+                        <textarea name="interests" class="form-control bg-secondary text-white"
                             rows="3">{{ old('interests', $user->interests) }}</textarea>
                     </div>
 
