@@ -107,11 +107,24 @@
                         <label class="form-label">Confirm New Password</label>
                         <input name="password_confirmation" type="password" class="form-control bg-secondary text-white">
                     </div>
-
-                    <div class="mb-3">
-                        <label class="form-label">Age Range</label>
-                        <input name="age_range" type="text" value="{{ old('age_range', $user->age_range) }}"
-                            class="form-control bg-secondary text-white" required>
+                    <div class="form-group">
+                        <label for="age_range" class="visually-hidden">Age Range</label>
+                        <select name="age_range" id="age_range" class="input-lg input-circle form-control" required
+                            aria-required="true">
+                            <option value="" disabled {{ old('age_range', $user->age_range) ? '' : 'selected' }}>Age Range
+                            </option>
+                            <option value="under_18" {{ old('age_range', $user->age_range) === 'under_18' ? 'selected' : '' }}>Under 18</option>
+                            <option value="18_24" {{ old('age_range', $user->age_range) === '18_24' ? 'selected' : '' }}>18 -
+                                24</option>
+                            <option value="25_34" {{ old('age_range', $user->age_range) === '25_34' ? 'selected' : '' }}>25 -
+                                34</option>
+                            <option value="35_44" {{ old('age_range', $user->age_range) === '35_44' ? 'selected' : '' }}>35 -
+                                44</option>
+                            <option value="45_54" {{ old('age_range', $user->age_range) === '45_54' ? 'selected' : '' }}>45 -
+                                54</option>
+                            <option value="55_plus" {{ old('age_range', $user->age_range) === '55_plus' ? 'selected' : '' }}>
+                                55+</option>
+                        </select>
                     </div>
 
                     <div class="mb-3">
