@@ -18,10 +18,6 @@ Route::get('/server-time', function () {
 
 
 Route::get('/run-daily-quotes', function () {
-    if (request()->header('X-CRON-KEY') !== env('CRON_SECRET_KEY')) {
-        abort(403, 'Unauthorized');
-    }
-
     // Call the controller method directly
     return app(QuoteGenerationController::class)->generate();
 });
