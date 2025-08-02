@@ -64,6 +64,12 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function isAdmin()
+    {
+        return $this->role === 'admin'; // Or however you identify admin users
+    }
+
     public function quotes()
     {
         return $this->hasMany(Quote::class);
