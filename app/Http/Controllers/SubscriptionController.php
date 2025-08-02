@@ -97,7 +97,9 @@ class SubscriptionController extends Controller
                 'cancel_at_period_end' => true,
             ]);
 
+            $user->plan_type = null;
             $user->is_subscribed = false;
+            // Keep stripe_subscription_id for tracking / potential resume
             $user->save();
 
             return redirect()->route('user.dashboard')->with(

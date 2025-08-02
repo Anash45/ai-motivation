@@ -24,11 +24,6 @@ class LoginController extends Controller
 
             $user = Auth::user();
 
-            if (!$user->hasVerifiedEmail()) {
-                $user->sendEmailVerificationNotification(); // Resend email
-                return redirect()->route('verification.notice'); // Keep them logged in
-            }
-
             // Redirect based on user role
             return $user->isAdmin()
                 ? redirect()->intended('/dashboard')
