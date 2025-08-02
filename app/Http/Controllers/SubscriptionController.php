@@ -73,7 +73,7 @@ class SubscriptionController extends Controller
         }
 
         $user = auth()->user();
-        $user->plan_typ = "subscribe";
+        $user->plan_type = "subscribe";
         $user->is_subscribed = true;
         $user->stripe_subscription_id = $subscription->id;
         $user->subscription_ends_at = Carbon::createFromTimestamp($periodEnd);
