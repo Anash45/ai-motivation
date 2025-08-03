@@ -31,9 +31,21 @@
                                     </div>
 
                                     <div class="form-group">
+                                        <label for="voice_id" class="visually-hidden">Voice</label>
+                                        <select name="voice_id" id="voice_id" class="input-lg input-circle form-control" required>
+                                            <option value="" disabled {{ old('voice_id') ? '' : 'selected' }}>Select Voice
+                                            </option>
+                                            @foreach($voices as $voice)
+                                                <option value="{{ $voice->id }}" {{ old('voice_id') == $voice->id ? 'selected' : '' }}>
+                                                    {{ $voice->name }} ({{ ucfirst($voice->gender) }})
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+
+                                    <div class="form-group">
                                         <label for="age_range" class="visually-hidden">Age Range</label>
-                                        <select name="age_range" id="age_range" class="input-lg input-circle form-control"
-                                            >
+                                        <select name="age_range" id="age_range" class="input-lg input-circle form-control">
                                             <option value="" disabled {{ old('age_range') ? '' : 'selected' }}>Age Range
                                             </option>
                                             <option value="under_18" {{ old('age_range') === 'under_18' ? 'selected' : '' }}>
@@ -55,14 +67,14 @@
                                         <label for="profession" class="visually-hidden">Profession</label>
                                         <input type="text" name="profession" id="profession"
                                             class="input-lg input-circle form-control" placeholder="Profession"
-                                            pattern=".{2,100}" 
-                                            value="{{ old('profession') }}">
+                                            pattern=".{2,100}" value="{{ old('profession') }}">
                                     </div>
 
                                     <div class="form-group">
                                         <label for="interests" class="visually-hidden">Interests</label>
                                         <textarea name="interests" id="interests" class="input-lg input-circle form-control"
-                                            placeholder="Your Interests (comma separated)" rows="3" >{{ old('interests') }}</textarea>
+                                            placeholder="Your Interests (comma separated)"
+                                            rows="3">{{ old('interests') }}</textarea>
                                     </div>
 
                                     <div class="form-group">

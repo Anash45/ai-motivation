@@ -8,7 +8,7 @@
 
                 <h2 class="card-title text-info mb-4">Your Daily Motivation</h2>
 
-                <p class="fs-5 fst-italic text-light">"{{ $quote }}"</p>
+                <p class="fs-5 fst-italic text-light">{{ $quote }}</p>
 
                 <div class="mt-4">
                     <div id="waveform" class="my-3 rounded" style="height: 100px;"></div>

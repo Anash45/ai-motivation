@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use App\Models\Voice;
 use Carbon\Carbon;
 
 class DashboardController extends Controller
@@ -12,7 +13,8 @@ class DashboardController extends Controller
     public function index()
     {
         $user = Auth::user();
-        return view('frontend.dashboard.my-dashboard', compact('user'));
+        $voices = Voice::all();
+        return view('frontend.dashboard.my-dashboard', compact('user', 'voices'));
     }
 
     public function updateProfile(Request $request)
@@ -22,6 +24,7 @@ class DashboardController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'password' => 'nullable|min:6|confirmed',
+            'voice_id' => 'required|exists:voices,id',
             'age_range' => 'nullable|string|max:255',
             'profession' => 'nullable|string|max:255',
             'interests' => 'nullable|string|max:500',
@@ -31,6 +34,7 @@ class DashboardController extends Controller
         if ($request->filled('password')) {
             $user->password = Hash::make($request->password);
         }
+        $user->voice_id = $request->voice_id;
         $user->age_range = $request->age_range;
         $user->profession = $request->profession;
         $user->interests = $request->interests;

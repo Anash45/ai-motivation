@@ -30,6 +30,7 @@ class User extends Authenticatable
         'age_range',
         'profession',
         'interests',
+        'voice_id',
         'plan_type',
         'is_subscribed',
         'subscription_ends_at',
@@ -93,6 +94,11 @@ class User extends Authenticatable
     public function hasExpiredSubscription(): bool
     {
         return $this->subscription_ends_at && now()->greaterThanOrEqualTo($this->subscription_ends_at);
+    }
+
+    public function voice()
+    {
+        return $this->belongsTo(Voice::class);
     }
 
 }

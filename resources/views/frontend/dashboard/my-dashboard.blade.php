@@ -86,7 +86,8 @@
                     </div>
                 @endif
 
-                <p class="text-muted text-sm mb-0 text-small">Your personalised quotes are sent automatically to your email every day at 7:00 am.</p>
+                <p class="text-muted text-sm mb-0 text-small">Your personalised quotes are sent automatically to your email
+                    every day at 7:00 am.</p>
                 {{-- Profile Form --}}
                 <form method="POST" novalidate class="needs-validation mt-4" action="{{ route('dashboard.update') }}">
                     @csrf
@@ -107,9 +108,21 @@
                         <label class="form-label">Confirm New Password</label>
                         <input name="password_confirmation" type="password" class="form-control bg-secondary text-white">
                     </div>
-                    <div class="form-group">
-                        <label for="age_range" class="visually-hidden">Age Range</label>
-                        <select name="age_range" id="age_range" class="input-lg input-circle form-control">
+                    <div class="form-group mb-3">
+                        <label for="voice_id">Voice</label>
+                        <select name="voice_id" id="voice_id" class="input-lg input-circle bg-secondary form-control text-white" required>
+                            <option value="" selected disabled>Select a
+                                Voice</option>
+                            @foreach ($voices as $voice)
+                                <option value="{{ $voice->id }}" {{ old('voice_id', $user->voice_id) == $voice->id ? 'selected' : '' }}>
+                                    {{ $voice->name }} ({{ ucfirst($voice->gender) }})
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="age_range">Age Range</label>
+                        <select name="age_range" id="age_range" class="input-lg input-circle bg-secondary form-control text-white">
                             <option value="" disabled {{ old('age_range', $user->age_range) ? '' : 'selected' }}>Age Range
                             </option>
                             <option value="under_18" {{ old('age_range', $user->age_range) === 'under_18' ? 'selected' : '' }}>Under 18</option>

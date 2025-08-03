@@ -32,22 +32,25 @@ class QuoteGenerationController extends Controller
         foreach ($users as $user) {
             try {
                 $greeting = "Good morning {$user->name},";
-                $optionalDetails = [];
+                // Build optional context, but don’t always use it
+                $contextParts = [];
 
                 if (!empty($user->age_range)) {
-                    $optionalDetails[] = "someone aged {$user->age_range}";
+                    $contextParts[] = "aged {$user->age_range}";
                 }
                 if (!empty($user->profession)) {
-                    $optionalDetails[] = "working as a {$user->profession}";
+                    $contextParts[] = "a {$user->profession}";
                 }
                 if (!empty($user->interests)) {
-                    $optionalDetails[] = "interested in {$user->interests}";
+                    $contextParts[] = "interested in {$user->interests}";
                 }
 
-                $extra = $optionalDetails ? " This is for " . implode(', ', $optionalDetails) . "." : "";
-                $prompt = "Here's your motivational quote for today. Keep it under 25 words.{$extra}";
+                $contextString = $contextParts ? " (optional context: " . implode(', ', $contextParts) . ")" : "";
 
-                // Generate Quote
+                // Final prompt
+                $prompt = "Give a short, uplifting motivational quote to inspire someone to have a good day. Keep it under 25 words. Avoid being generic.{$contextString}";
+
+                // 1. Generate Quote
                 $openAiResponse = Http::withToken(env('OPENAI_API_KEY'))->post('https://api.openai.com/v1/chat/completions', [
                     'model' => 'gpt-3.5-turbo',
                     'messages' => [
@@ -57,53 +60,54 @@ class QuoteGenerationController extends Controller
                     'max_tokens' => 100,
                 ]);
 
-                $quote = trim($openAiResponse['choices'][0]['message']['content'] ?? null);
-                if (!$quote) {
-                    Log::warning("No quote returned for user {$user->id}");
+                if ($openAiResponse->failed()) {
+                    Log::warning("OpenAI Chat failed for user {$user->id}: " . $openAiResponse->body());
                     continue;
                 }
 
-                $quote = $greeting . " " . $quote;
-
-                // Generate Audio
-                $voiceId = 'uju3wxzG5OhpWcoi3SMy';
-                $ttsResponse = Http::withHeaders([
-                    'xi-api-key' => env('ELEVENLABS_API_KEY'),
-                    'Content-Type' => 'application/json',
-                ])->post("https://api.elevenlabs.io/v1/text-to-speech/{$voiceId}", [
-                    'text' => $quote,
-                    'voice_settings' => [
-                        'stability' => 0.5,
-                        'similarity_boost' => 0.5,
-                        'style' => 0.5,
-                        'speed' => 0.9,
-                    ]
-                ]);
-
-                if ($ttsResponse->failed()) {
-                    Log::error("Audio failed for user {$user->id}");
+                $quoteText = trim($openAiResponse['choices'][0]['message']['content'] ?? '');
+                if (empty($quoteText)) {
+                    Log::warning("No quote content returned for user {$user->id}");
                     continue;
                 }
 
-                // Save File
+                $quote = "{$greeting} {$quoteText}";
+
+                // 2. Generate Audio with OpenAI TTS
+                $voiceId = $user->voice?->model_id ?? 'onyx'; // ← Use related Voice model's `model_id`
+
                 $filename = "quote_{$user->id}_" . time() . ".mp3";
                 $relativePath = "assets/quotes/{$filename}";
                 $absolutePath = public_path($relativePath);
 
-                if (!file_exists(public_path('assets/quotes'))) {
-                    mkdir(public_path('assets/quotes'), 0755, true);
+                if (!file_exists(dirname($absolutePath))) {
+                    mkdir(dirname($absolutePath), 0755, true);
+                }
+
+                $ttsResponse = Http::withToken(env('OPENAI_API_KEY'))->withOptions([
+                    'stream' => true,
+                ])->post('https://api.openai.com/v1/audio/speech', [
+                            'model' => 'tts-1',
+                            'input' => $quote,
+                            'voice' => $voiceId,
+                            'speed' => 0.95,
+                        ]);
+
+                if ($ttsResponse->failed()) {
+                    Log::error("OpenAI TTS failed for user {$user->id}: " . $ttsResponse->body());
+                    continue;
                 }
 
                 file_put_contents($absolutePath, $ttsResponse->body());
 
-                // Save to DB
+                // 3. Save Quote to DB
                 $quoteModel = Quote::create([
                     'user_id' => $user->id,
                     'quote' => $quote,
                     'audio_path' => $relativePath,
                 ]);
 
-                // Send Email
+                // 4. Send Email
                 Mail::to($user->email)->send(new DailyQuoteMail(
                     $user,
                     $quote,
@@ -111,12 +115,15 @@ class QuoteGenerationController extends Controller
                     $absolutePath
                 ));
 
-                Log::warning("Quote saved and email sent for user: {$user->id}");
+                Log::info("Quote saved and email sent for user: {$user->id}");
 
             } catch (\Throwable $e) {
-                Log::error("Error for user {$user->id}: " . $e->getMessage());
+                Log::error("Error for user {$user->id}: {$e->getMessage()}", [
+                    'trace' => $e->getTraceAsString()
+                ]);
             }
         }
+
 
         Log::warning("Daily quote generation complete.");
         return response()->json(['message' => 'Quote generation completed']);
