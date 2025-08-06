@@ -22,19 +22,24 @@
                 <li><a href="/#home" class="active">Home</a></li>
                 <li><a href="/#about">About</a></li>
                 <li><a href="/#contact">Contact</a></li>
-                <li><a href="/#faqs">Faqs</a></li>
+                <li><a href="/#faqs">FAQs</a></li>
             </ul>
 
             <ul class="items-end clearlist local-scroll d-flex align-items-center">
 
                 @guest
                     {{-- Not logged in: show Join & Login --}}
-                    <li class="pb-1">
+                    <li class="pb-1 mx-2">
                         <a href="{{ route('user.register') }}" class="opacity-1 no-hover">
-                            <span class="link-hover-anim underline" data-link-animate="y">Start trial</span>
+                            <span class="link-hover-anim underline" data-link-animate="y">Subscribe</span>
                         </a>
                     </li>
-                    <li>
+                    <li class="pb-1 mx-2">
+                        <a href="{{ route('user.register') }}" class="opacity-1 no-hover">
+                            <span class="link-hover-anim underline" data-link-animate="y">Start Trial</span>
+                        </a>
+                    </li>
+                    <li class="ms-2">
                         <a href="{{ route('user.login') }}"
                             class="opacity-1 btn-hover-anim d-flex flex-column justify-content-center">
                             <span class="btn btn-mod btn-border-w-light btn-small btn-circle"

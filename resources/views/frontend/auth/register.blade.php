@@ -17,27 +17,27 @@
                                     @csrf
 
                                     <div class="form-group">
-                                        <label for="name" class="visually-hidden">Name</label>
+                                        <label for="name" class="visually-hidden">Name <span class="text-danger">*</span></label>
                                         <input type="text" name="name" id="name" class="input-lg input-circle form-control"
                                             placeholder="Name" pattern=".{3,100}" required aria-required="true"
                                             value="{{ old('name') }}">
                                     </div>
 
                                     <div class="form-group">
-                                        <label for="email" class="visually-hidden">Email</label>
+                                        <label for="email" class="visually-hidden">Email <span class="text-danger">*</span></label>
                                         <input type="email" name="email" id="email"
                                             class="input-lg input-circle form-control" placeholder="Email" required
                                             value="{{ old('email') }}">
                                     </div>
 
                                     <div class="form-group">
-                                        <label for="voice_id" class="visually-hidden">Voice</label>
+                                        <label for="voice_id" class="visually-hidden">Voice <span class="text-danger">*</span></label>
                                         <select name="voice_id" id="voice_id" class="input-lg input-circle form-control" required>
                                             <option value="" disabled {{ old('voice_id') ? '' : 'selected' }}>Select Voice
                                             </option>
                                             @foreach($voices as $voice)
                                                 <option value="{{ $voice->id }}" {{ old('voice_id') == $voice->id ? 'selected' : '' }}>
-                                                    {{ $voice->name }} ({{ ucfirst($voice->gender) }})
+                                                    {{ ucfirst($voice->gender) }}
                                                 </option>
                                             @endforeach
                                         </select>
@@ -78,13 +78,13 @@
                                     </div>
 
                                     <div class="form-group">
-                                        <label for="password" class="visually-hidden">Password</label>
+                                        <label for="password" class="visually-hidden">Password <span class="text-danger">*</span></label>
                                         <input type="password" name="password" id="password"
                                             class="input-lg input-circle form-control" placeholder="Password" required>
                                     </div>
 
                                     <div class="form-group">
-                                        <label for="password_confirmation" class="visually-hidden">Confirm Password</label>
+                                        <label for="password_confirmation" class="visually-hidden">Confirm Password <span class="text-danger">*</span></label>
                                         <input type="password" name="password_confirmation" id="password_confirmation"
                                             class="input-lg input-circle form-control" placeholder="Confirm Password"
                                             required>

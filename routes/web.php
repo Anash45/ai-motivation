@@ -31,11 +31,16 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
 Route::post('/contact', [ContactController::class, 'send'])->name('contact.send');
 
-Route::middleware(['auth', 'verified'])->group(function () {
+Route::middleware(['auth'])->group(function () {
     Route::get('/subscribe', [SubscriptionController::class, 'show'])->name('subscription.page');
     Route::post('/create-checkout-session', [SubscriptionController::class, 'createCheckoutSession'])->name('subscription.checkout');
     Route::get('/subscribe/success', [SubscriptionController::class, 'success'])->name('subscription.success');
     Route::get('/subscribe/cancel', fn() => view('frontend.subscription.cancel'))->name('subscription.cancel');
+
+    Route::get('/subscribe/paypal', [SubscriptionController::class, 'startPaypalSubscription'])->name('subscription.paypal.start');
+    Route::get('/subscribe/paypal/approve', [SubscriptionController::class, 'approvePaypalSubscription'])->name('subscription.paypal.approve');
+    Route::get('/subscribe/paypal/cancel', [SubscriptionController::class, 'cancelPaypalSubscription'])->name('subscription.paypal.cancel');
+
 });
 Route::post('/email-subscribe', [SubscriberController::class, 'subscribe'])->name('subscribe');
 Route::get('/quote/{uuid}', [OpenAIQuoteController::class, 'show'])->name('quotes.show');
@@ -43,6 +48,15 @@ Route::get('/generate-quote/{user}', [OpenAIQuoteController::class, 'generate'])
 
 Route::get('/', function () {
     return view('frontend.home');
+});
+
+Route::get('/terms-and-conditions', function () {
+    return view('frontend.tos');
+});
+
+
+Route::get('/privacy-policy', function () {
+    return view('frontend.privacy-policy');
 });
 
 Route::redirect('/home', '/', 301);

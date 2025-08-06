@@ -12,18 +12,26 @@ class ContactMessage extends Mailable
 
     public $name;
     public $email;
-    public $userMessage;
+    public $messageContent;
 
-    public function __construct($name, $email, $userMessage)
+    /**
+     * Create a new message instance.
+     */
+    public function __construct($name, $email, $messageContent)
     {
         $this->name = $name;
         $this->email = $email;
-        $this->userMessage = $userMessage;
+        $this->messageContent = $messageContent;
     }
 
+    /**
+     * Build the message.
+     */
     public function build()
     {
-        return $this->subject('Vibelift - New Contact Form Submission')
-            ->view('emails.contact-message');
+        return $this->subject('New Contact Message')
+                    ->replyTo($this->email, $this->name)
+                    ->markdown('emails.contact-message');
     }
 }
+

@@ -41,7 +41,7 @@
 
                                 <a href="/register"
                                     class="btn btn-mod btn-color btn-large btn-circle btn-hover-anim mb-xs-10">
-                                    <span>Start trial</span>
+                                    <span>Start Trial</span>
                                 </a>
 
                                 <a href="#about" class="link-hover-anim ms-2 ms-sm-5 me-2" data-link-animate="y">Learn
@@ -184,7 +184,7 @@
                         <div class="local-scroll wch-unset">
 
                             <a href="/register" class="btn btn-mod btn-color btn-large btn-circle btn-hover-anim mb-xs-10">
-                                <span>Start trial</span>
+                                <span>Start Trial</span>
                             </a>
 
                         </div>
@@ -229,67 +229,74 @@
 
 
     <!-- Numbers Section -->
-    <section class="page-section bg-dark-1 bg-dark-alpha light-content bg-fixed"
-        style="background-image: url(/assets/images/demo-slick/looking-up.jpg)">
+    <section class="page-section bg-dark-1 light-content" id="how-it-works">
         <div class="container position-relative">
 
-            <!-- Numbers Grid -->
-            <div class="row mt-n30 wow fadeInUp">
+            <!-- Grid -->
+            <div class="row">
 
-                <!-- Numbers Item -->
-                <div class="col-sm-6 col-xl-3 d-flex align-items-stretch mt-30">
-                    <div class="number-2-item">
-                        <div class="number-2-title">
-                            7,300+
+                <!-- Text -->
+                <div class="col-md-12 col-lg-3 mb-md-50">
+
+                    <h2 class="section-caption mb-xs-10">How it works</h2>
+
+                    <h3 class="section-title-small mb-40">How It Works?</h3>
+
+                    <div class="section-line"></div>
+
+                </div>
+                <!-- End Text -->
+
+                <!-- Feature Item -->
+                <div class="col-md-4 col-lg-3 d-flex align-items-stretch mb-sm-30">
+                    <div class="alt-features-item border-left mt-0">
+                        <div class="alt-features-icon">
+                            <img src="{{ asset("assets/images/user-plus-solid-full.svg") }}" alt="Vibe Lift Daily"
+                                height="48" width="48">
                         </div>
-                        <div class="number-2-descr">
-                            Quotes Delivered
+                        <h4 class="alt-features-title">Simple Signup</h4>
+                        <div class="alt-features-descr">
+                            Create your account and tell us a bit about yourself — your age, profession, and interests help
+                            shape your daily inspiration.
                         </div>
                     </div>
                 </div>
-                <!-- End Numbers Item -->
+                <!-- End Feature Item -->
 
-                <!-- Numbers Item -->
-                <div class="col-sm-6 col-xl-3 d-flex align-items-stretch mt-30">
-                    <div class="number-2-item">
-                        <div class="number-2-title">
-                            98%
+                <!-- Feature Item -->
+                <div class="col-md-4 col-lg-3 d-flex align-items-stretch mb-sm-30">
+                    <div class="alt-features-item border-left mt-0">
+                        <div class="alt-features-icon">
+                            <img src="{{ asset("assets/images/hexagon-nodes-bolt-solid-full.svg") }}" alt="Vibe Lift Daily"
+                                height="48" width="48">
                         </div>
-                        <div class="number-2-descr">
-                            Users Feel Uplifted
+                        <h4 class="alt-features-title">AI-Crafted Quotes</h4>
+                        <div class="alt-features-descr">
+                            Our AI blends psychology and personal insights to generate motivational quotes designed just for
+                            you.
                         </div>
                     </div>
                 </div>
-                <!-- End Numbers Item -->
+                <!-- End Feature Item -->
 
-                <!-- Numbers Item -->
-                <div class="col-sm-6 col-xl-3 d-flex align-items-stretch mt-30">
-                    <div class="number-2-item">
-                        <div class="number-2-title">
-                            1,200+
+                <!-- Feature Item -->
+                <div class="col-md-4 col-lg-3 d-flex align-items-stretch">
+                    <div class="alt-features-item border-left mt-0">
+                        <div class="alt-features-icon">
+                            <img src="{{ asset("assets/images/hourglass-end-solid-full.svg") }}" alt="Vibe Lift Daily"
+                                height="48" width="48">
                         </div>
-                        <div class="number-2-descr">
-                            Profiles Inspired
+                        <h4 class="alt-features-title">Delivered Daily at 7 AM</h4>
+                        <div class="alt-features-descr">
+                            Wake up to your custom quote — text and audio — sent straight to your inbox every morning at 7
+                            AM.
                         </div>
                     </div>
                 </div>
-                <!-- End Numbers Item -->
-
-                <!-- Numbers Item -->
-                <div class="col-sm-6 col-xl-3 d-flex align-items-stretch mt-30">
-                    <div class="number-2-item">
-                        <div class="number-2-title">
-                            Zero
-                        </div>
-                        <div class="number-2-descr">
-                            Generic Messages
-                        </div>
-                    </div>
-                </div>
-                <!-- End Numbers Item -->
+                <!-- End Feature Item -->
 
             </div>
-            <!-- End Numbers Grid -->
+            <!-- End Grid -->
 
         </div>
     </section>
@@ -338,7 +345,7 @@
                                         <textarea name="message" id="message" class="input-lg input-circle form-control"
                                             style="height: 130px;" placeholder="Message"></textarea>
                                     </div>
-
+                                    <input type="hidden" name="recaptcha_token" id="recaptcha_token">
                                     <!-- Send Button -->
                                     <button
                                         class="submit_btn btn btn-mod btn-color btn-large btn-full btn-circle btn-hover-anim"
@@ -350,8 +357,9 @@
                                     <!-- Inform Tip -->
                                     <div class="form-tip w-100 pt-30 mt-sm-20">
                                         <i class="icon-info size-16"></i>
-                                        All the fields are required. By sending the form you agree to the <a href="#">Terms
-                                            & Conditions</a> and <a href="#">Privacy Policy</a>.
+                                        All the fields are required. By sending the form you agree to the <a
+                                            href="/terms-and-conditions">Terms
+                                            & Conditions</a> and <a href="/privacy-policy">Privacy Policy</a>.
                                     </div>
                                     <!-- End Inform Tip -->
 
@@ -375,7 +383,7 @@
     <!-- End Contact Section -->
 
     <!-- FAQ Section -->
-    <section class="page-section bg-dark-1 light-content z-index-1">
+    <section class="page-section bg-dark-1 light-content z-index-1" id="faqs">
         <div class="container position-relative">
 
             <!-- Decorative Waves -->
@@ -462,5 +470,6 @@
 
         </div>
     </section>
+    <script src="https://www.google.com/recaptcha/api.js?render={{ env('RECAPTCHA_SITE_KEY') }}"></script>
     <!-- End FAQ Section -->
 @endsection

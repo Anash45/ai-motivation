@@ -10,7 +10,7 @@
                         <div class="col-md-8 mx-auto">
                             <div class="bg-border-dark round p-4 position-relative z-index-1">
 
-                                <h4 class="h3 mb-40 mb-sm-30 text-center">Join Vibe Lift Daily</h4>
+                                <h4 class="h3 mb-40 mb-sm-30 text-center">Login Vibe Lift Daily</h4>
                                 @include('partials.messages')
                                 <form class="form join-form needs-validation" id="join_form" novalidate method="POST"
                                     action="{{ route('user.login') }}">
@@ -36,6 +36,10 @@
 
                                     <div class="form-tip w-100 pt-30 mt-sm-20 text-center">
                                         Doesn't have an account? <a href="{{ route('user.register') }}">Signup</a>
+                                    </div>
+
+                                    <div class="form-tip w-100 pt-30 mt-sm-20 text-center">
+                                        Forgot password? <a href="{{ route('password.request') }}">Reset here</a>
                                     </div>
                                 </form>
 

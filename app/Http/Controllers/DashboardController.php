@@ -23,6 +23,7 @@ class DashboardController extends Controller
 
         $request->validate([
             'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email,' . $user->id,
             'password' => 'nullable|min:6|confirmed',
             'voice_id' => 'required|exists:voices,id',
             'age_range' => 'nullable|string|max:255',
@@ -31,6 +32,7 @@ class DashboardController extends Controller
         ]);
 
         $user->name = $request->name;
+        $user->email = $request->email;
         if ($request->filled('password')) {
             $user->password = Hash::make($request->password);
         }

@@ -93,8 +93,14 @@
                     @csrf
 
                     <div class="mb-3">
-                        <label class="form-label">Name</label>
+                        <label class="form-label">Name <span class="text-danger">*</span></label>
                         <input name="name" type="text" value="{{ old('name', $user->name) }}"
+                            class="form-control bg-secondary text-white" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Email <span class="text-danger">*</span></label>
+                        <input name="email" type="email" value="{{ old('email', $user->email) }}"
                             class="form-control bg-secondary text-white" required>
                     </div>
 
@@ -109,13 +115,13 @@
                         <input name="password_confirmation" type="password" class="form-control bg-secondary text-white">
                     </div>
                     <div class="form-group mb-3">
-                        <label for="voice_id">Voice</label>
+                        <label for="voice_id">Voice <span class="text-danger">*</span></label>
                         <select name="voice_id" id="voice_id" class="input-lg input-circle bg-secondary form-control text-white" required>
                             <option value="" selected disabled>Select a
                                 Voice</option>
                             @foreach ($voices as $voice)
                                 <option value="{{ $voice->id }}" {{ old('voice_id', $user->voice_id) == $voice->id ? 'selected' : '' }}>
-                                    {{ $voice->name }} ({{ ucfirst($voice->gender) }})
+                                    {{ ucfirst($voice->gender) }}
                                 </option>
                             @endforeach
                         </select>
@@ -146,7 +152,7 @@
                     </div>
 
                     <div class="mb-3">
-                        <label class="form-label">Interests</label>
+                        <label class="form-label">Interests (comma separated)</label>
                         <textarea name="interests" class="form-control bg-secondary text-white"
                             rows="3">{{ old('interests', $user->interests) }}</textarea>
                     </div>

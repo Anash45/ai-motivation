@@ -10,6 +10,9 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
 use App\Models\Voice;
+use App\Mail\TrialWelcomeMail;
+use App\Mail\TrialSignupAlertMail;
+use Illuminate\Support\Facades\Mail;
 
 class RegisterController extends Controller
 {
@@ -51,6 +54,11 @@ class RegisterController extends Controller
             'plan_type' => $request->plan_type,
             'trial_ends_at' => $request->plan_type === 'trial' ? now()->addDays(7) : null,
         ]);
+
+        if ($request->plan_type === 'trial') {
+            Mail::to($user->email)->send(new TrialWelcomeMail($user));
+            Mail::to('alerts@vibeliftdaily.com')->send(new TrialSignupAlertMail($user));
+        }
 
         // event(new Registered($user)); // For email verification
 

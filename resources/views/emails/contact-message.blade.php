@@ -1,6 +1,15 @@
-<h2>New Contact Message</h2>
+@component('mail::message')
+# New Contact Message
 
-<p><strong>Name:</strong> {{ $name }}</p>
-<p><strong>Email:</strong> {{ $email }}</p>
-<p><strong>Message:</strong></p>
-<p>{{ $userMessage }}</p>
+**Name:** {{ $name }}
+
+**Email:** {{ $email }}
+
+**Message:**
+
+{{ $messageContent }}
+
+@component('mail::subcopy')
+You received this message via the contact form on your website.
+@endcomponent
+@endcomponent

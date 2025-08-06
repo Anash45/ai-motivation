@@ -34,7 +34,10 @@ class User extends Authenticatable
         'plan_type',
         'is_subscribed',
         'subscription_ends_at',
-        'stripe_subscription_id'
+        'stripe_subscription_id',
+        'paypal_subscription_id',
+        'paypal_plan_id',
+        'paypal_status',
     ];
 
 

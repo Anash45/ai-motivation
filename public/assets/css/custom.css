@@ -1,3 +1,7 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap');
+body{
+    font-family: "DM Sans", sans-serif !important;
+}
 .color-primary-1{
     color: #60e0fd !important;
 }
@@ -31,4 +35,22 @@ main{
 .quote-box{
     background-color: #ffffff32 !important;
     backdrop-filter: blur(10px) !important;
+}
+
+.list-title{
+    font-size: 26px;
+    font-weight: 800;
+}
+
+.list-title strong{
+    font-weight: 800;
+}
+
+.grecaptcha-badge{
+    z-index: 9;
+}
+
+select option{
+    background-color: #1b1b1b !important;
+    color: #ffffff !important;
 }

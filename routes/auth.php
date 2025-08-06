@@ -12,13 +12,19 @@ use App\Http\Controllers\Auth\VerifyEmailController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('guest')->group(function () {
-    Route::get('register', [RegisteredUserController::class, 'create'])
-        ->name('register');
+    
+    // Redirect GET /login to /vibe-login
+    Route::get('/register', function () {
+        return redirect('/join-vibe');
+    });
 
     Route::post('register', [RegisteredUserController::class, 'store']);
 
-    Route::get('login', [AuthenticatedSessionController::class, 'create'])
-        ->name('login');
+
+    // Redirect GET /login to /vibe-login
+    Route::get('/login', function () {
+        return redirect('/vibe-login');
+    });
 
     Route::post('login', [AuthenticatedSessionController::class, 'store']);
 

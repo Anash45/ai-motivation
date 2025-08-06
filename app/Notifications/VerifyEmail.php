@@ -19,7 +19,7 @@ class VerifyEmail extends BaseVerifyEmail
             ->line('Thanks for joining VibeLift Daily! To get started, please verify your email address.')
             ->action('Verify Email', $verificationUrl)
             ->line('If you did not create an account, you can ignore this message.')
-            ->salutation('— The VibeLift Team');
+            ->salutation('— Vibe Lift Daily Team');
     }
 
     protected function verificationUrl($notifiable)
