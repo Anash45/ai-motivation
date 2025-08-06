@@ -23,7 +23,7 @@ class TrialWelcomeMail extends Mailable
 
     public function build()
     {
-        return $this->subject('Welcome to VibeLift Daily')
+        return $this->subject('Welcome to Vibe Lift Daily')
             ->markdown('emails.trial-welcome');
     }
 }

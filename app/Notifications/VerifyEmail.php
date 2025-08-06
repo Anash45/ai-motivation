@@ -14,9 +14,9 @@ class VerifyEmail extends BaseVerifyEmail
         $verificationUrl = $this->verificationUrl($notifiable);
 
         return (new MailMessage)
-            ->subject('Confirm your email for VibeLift Daily')
+            ->subject('Confirm your email for Vibe Lift Daily')
             ->greeting('Hi ' . $notifiable->name . ',')
-            ->line('Thanks for joining VibeLift Daily! To get started, please verify your email address.')
+            ->line('Thanks for joining Vibe Lift Daily! To get started, please verify your email address.')
             ->action('Verify Email', $verificationUrl)
             ->line('If you did not create an account, you can ignore this message.')
             ->salutation('— Vibe Lift Daily Team');
