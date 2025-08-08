@@ -5,6 +5,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SubscriberController;
 use App\Http\Controllers\SubscriptionController;
+use App\Http\Controllers\TestEmailController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\OpenAIQuoteController;
@@ -66,7 +67,7 @@ Route::post('/vibe-login', [UserLogin::class, 'login']);
 
 Route::get('/join-vibe', [UserRegister::class, 'showRegistrationForm'])->name('user.register');
 Route::post('/join-vibe', [UserRegister::class, 'register']);
-
+Route::get('/test-email', [TestEmailController::class, 'testEmail'])->name('test.email');
 
 // Verification Notice
 Route::get('/email/verify', function () {
