@@ -75,7 +75,7 @@ class RegisterController extends Controller
                         'type' => 'trial_alert'
                     ]);
 
-                } catch (\Exception $emailException) {
+                } catch (Exception $emailException) {
                     Log::channel('emails')->error('Failed to send trial emails', [
                         'user_id' => $user->id,
                         'error' => $emailException->getMessage(),
@@ -92,7 +92,7 @@ class RegisterController extends Controller
                 ? redirect()->route('subscription.page')
                 : redirect()->route('dashboard')->with('success', 'Welcome! Your 7-day trial has started.');
 
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             Log::error('User registration failed', [
                 'error' => $e->getMessage(),
                 'trace' => $e->getTraceAsString(),
