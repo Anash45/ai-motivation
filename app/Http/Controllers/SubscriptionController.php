@@ -104,7 +104,7 @@ class SubscriptionController extends Controller
 
             return redirect()->route('user.dashboard')->with(
                 'success',
-                'Your subscription has been cancelled. You will continue receiving quotes until ' .
+                'Your subscription has been cancelled. You will continue receiving messages until ' .
                 Carbon::parse($user->subscription_ends_at)->toFormattedDateString() . '.'
             );
         } catch (\Exception $e) {

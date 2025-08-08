@@ -41,7 +41,7 @@
 
                     <script>
                         function confirmCancel() {
-                            return confirm("Are you sure you want to cancel your subscription?\nYou’ll still receive quotes until {{ $subscriptionEnds }}.");
+                            return confirm("Are you sure you want to cancel your subscription?\nYou’ll still receive messages until {{ $subscriptionEnds }}.");
                         }
                     </script>
 
@@ -66,7 +66,7 @@
                     <div class="alert alert-warning p-2">
                         Your <strong>free trial</strong> has ended.
                         <a href="{{ route('subscription.page') }}" class="fw-bold">Subscribe now</a> to keep receiving
-                        quotes.
+                        messages.
                     </div>
 
                 @elseif (!$user->is_subscribed && !$trialValid && !$user->subscription_ends_at && $user->plan_type !== 'trial')
@@ -86,7 +86,7 @@
                     </div>
                 @endif
 
-                <p class="text-muted text-sm mb-0 text-small">Your personalised quotes are sent automatically to your email
+                <p class="text-muted text-sm mb-0 text-small">Your personalised messages are sent automatically to your email
                     every day at 7:00 am.</p>
                 {{-- Profile Form --}}
                 <form method="POST" novalidate class="needs-validation mt-4" action="{{ route('dashboard.update') }}">

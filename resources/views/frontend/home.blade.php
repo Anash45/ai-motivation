@@ -117,7 +117,7 @@
                         </h3>
 
                         <p class="text-gray mb-40">
-                            Vibe Lift Daily blends AI with psychology to craft quotes that truly resonate. We focus on
+                            Vibe Lift Daily blends AI with psychology to craft messages that truly resonate. We focus on
                             helping individuals build clarity, purpose, and momentum - one message at a time. Every
                             quote is shaped around your lifestyle and mindset, ensuring you get more than inspiration -
                             you get alignment. With a thoughtful user experience and a mission rooted in human impact,
@@ -270,7 +270,7 @@
                             <img src="{{ asset("assets/images/hexagon-nodes-bolt-solid-full.svg") }}" alt="Vibe Lift Daily"
                                 height="48" width="48">
                         </div>
-                        <h4 class="alt-features-title">AI-Crafted Quotes</h4>
+                        <h4 class="alt-features-title">AI-Crafted Messages</h4>
                         <div class="alt-features-descr">
                             Our AI blends psychology and personal insights to generate motivational messages designed just for
                             you.
@@ -418,7 +418,7 @@
                     <dl class="toggle">
 
                         <dt>
-                            <a href="#">How does Vibe Lift Daily create quotes?
+                            <a href="#">How does Vibe Lift Daily create messages?
                             </a>
                         </dt>
                         <dd class="black">
@@ -433,7 +433,7 @@
                             </a>
                         </dt>
                         <dd class="black">
-                            Absolutely. No credit card is required. You'll receive daily motivational quotes for 7 days,
+                            Absolutely. No credit card is required. You'll receive daily motivational messages for 7 days,
                             with full access to your personalized dashboard.
 
 
