@@ -9,6 +9,7 @@ use App\Http\Controllers\TestEmailController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\OpenAIQuoteController;
+use App\Http\Controllers\TrialReminderController;
 use App\Http\Controllers\Frontend\Auth\LoginController as UserLogin;
 use App\Http\Controllers\Frontend\Auth\RegisterController as UserRegister;
 use App\Http\Controllers\QuoteGenerationController;
@@ -16,6 +17,8 @@ use App\Http\Controllers\QuoteGenerationController;
 Route::get('/server-time', function () {
     return now()->toDateTimeString();
 });
+
+Route::get('/send-trial-reminders', [TrialReminderController::class, 'sendTrialEndingReminders']);
 
 
 Route::get('/run-daily-quotes', function () {
