@@ -114,7 +114,7 @@ class QuoteGenerationController extends Controller
 
                     $isSimilar = $allQuotes->contains(function ($prev) use ($quoteText) {
                         similar_text($prev, $quoteText, $percent);
-                        return $percent > 85;
+                        return $percent > 30;
                     });
 
                     if (!$isSimilar) {
