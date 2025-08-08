@@ -65,7 +65,7 @@
                     {{-- 4. Trial Expired --}}
                     <div class="alert alert-warning p-2">
                         Your <strong>free trial</strong> has ended.
-                        <a href="{{ route('subscription.checkout') }}" class="fw-bold">Subscribe now</a> to keep receiving
+                        <a href="{{ route('subscription.page') }}" class="fw-bold">Subscribe now</a> to keep receiving
                         quotes.
                     </div>
 
@@ -73,7 +73,7 @@
                     {{-- 5. Not Subscribed, No Trial --}}
                     <div class="alert alert-danger p-2">
                         You're currently not subscribed.
-                        <a href="{{ route('subscription.checkout') }}" class="fw-bold">Subscribe now</a> to receive your daily
+                        <a href="{{ route('subscription.page') }}" class="fw-bold">Subscribe now</a> to receive your daily
                         motivational messages.
                     </div>
 
@@ -81,7 +81,7 @@
                     {{-- 6. Subscription Expired --}}
                     <div class="alert alert-warning p-2">
                         Your subscription expired on <strong>{{ $subscriptionEnds }}</strong>.
-                        <a href="{{ route('subscription.checkout') }}" class="fw-bold">Renew now</a> to resume receiving daily
+                        <a href="{{ route('subscription.page') }}" class="fw-bold">Renew now</a> to resume receiving daily
                         motivational messages.
                     </div>
                 @endif
