@@ -18,7 +18,6 @@ Route::middleware('guest')->group(function () {
         return redirect('/join-vibe');
     });
 
-    Route::post('register', [RegisteredUserController::class, 'store']);
 
 
     // Redirect GET /login to /vibe-login

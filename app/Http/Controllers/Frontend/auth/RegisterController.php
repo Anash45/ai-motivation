@@ -27,6 +27,7 @@ class RegisterController extends Controller
 
     public function register(Request $request)
     {
+        Log::error(message: "Registration Starts.");
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|min:3|max:100',
             'email' => 'required|email|unique:users,email',
@@ -63,7 +64,7 @@ class RegisterController extends Controller
                 try {
                     // Send welcome email to user
                     Mail::to($user->email)->send(new TrialWelcomeMail($user));
-                    Log::channel('emails')->info('Trial welcome email sent successfully', [
+                    Log::info('Trial welcome email sent successfully', [
                         'user_id' => $user->id,
                         'email' => $user->email,
                         'type' => 'trial_welcome'
@@ -71,13 +72,13 @@ class RegisterController extends Controller
 
                     // Send alert email to admin
                     Mail::to('alerts@vibeliftdaily.com')->send(new TrialSignupAlertMail($user));
-                    Log::channel('emails')->info('Trial signup alert email sent successfully', [
+                    Log::info('Trial signup alert email sent successfully', [
                         'user_id' => $user->id,
                         'type' => 'trial_alert'
                     ]);
 
                 } catch (Exception $emailException) {
-                    Log::channel('emails')->error('Failed to send trial emails', [
+                    Log::info('Failed to send trial emails', [
                         'user_id' => $user->id,
                         'error' => $emailException->getMessage(),
                         'trace' => $emailException->getTraceAsString()
