@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\DailyQuoteMail;
 use Illuminate\Http\Response;
+use Illuminate\Support\Str;
 
 class QuoteGenerationController extends Controller
 {
@@ -29,53 +30,110 @@ class QuoteGenerationController extends Controller
                 });
         })->get();
 
+        $themes = [
+            'resilience',
+            'courage',
+            'growth',
+            'gratitude',
+            'focus',
+            'hope',
+            'compassion',
+            'kindness',
+            'self-belief',
+            'clarity',
+            'perseverance',
+            'determination',
+            'mindfulness',
+            'confidence',
+            'balance',
+            'strength',
+            'calm',
+            'positivity',
+            'inner peace',
+            'ambition',
+            'patience',
+            'discipline',
+            'humility',
+            'purpose',
+            'vision',
+            'love',
+            'enthusiasm',
+            'faith',
+            'bravery',
+            'energy'
+        ];
+
         foreach ($users as $user) {
             try {
                 $greeting = "Good morning {$user->name},";
-                // Build optional context, but don’t always use it
-                $contextParts = [];
 
+                // Build age context only
+                $contextParts = [];
                 if (!empty($user->age_range)) {
                     $contextParts[] = "aged {$user->age_range}";
-                }
-                if (!empty($user->profession)) {
-                    $contextParts[] = "a {$user->profession}";
-                }
-                if (!empty($user->interests)) {
-                    $contextParts[] = "interested in {$user->interests}";
                 }
 
                 $contextString = $contextParts ? " (optional context: " . implode(', ', $contextParts) . ")" : "";
 
-                // Final prompt
-                $prompt = "Give a short, uplifting motivational quote to inspire someone to have a good day. Keep it under 25 words. Avoid being generic.{$contextString}";
+                // Pick a random theme for this user
+                $userTheme = $themes[array_rand($themes)];
 
-                // 1. Generate Quote
-                $openAiResponse = Http::withToken(env('OPENAI_API_KEY'))->post('https://api.openai.com/v1/chat/completions', [
-                    'model' => 'gpt-3.5-turbo',
-                    'messages' => [
-                        ['role' => 'user', 'content' => $prompt]
-                    ],
-                    'temperature' => 0.7,
-                    'max_tokens' => 100,
-                ]);
+                $quoteText = null;
+                $maxRetries = 3;
 
-                if ($openAiResponse->failed()) {
-                    Log::warning("OpenAI Chat failed for user {$user->id}: " . $openAiResponse->body());
-                    continue;
+                for ($attempt = 1; $attempt <= $maxRetries; $attempt++) {
+                    // Prompt with random theme
+                    $prompt = "Give a short, uplifting motivational quote about {$userTheme} to inspire someone to have a good day. Keep it under 25 words. Avoid being generic.{$contextString}";
+
+                    $openAiResponse = Http::withToken(env('OPENAI_API_KEY'))->post('https://api.openai.com/v1/chat/completions', [
+                        'model' => 'gpt-3.5-turbo',
+                        'messages' => [
+                            ['role' => 'user', 'content' => $prompt]
+                        ],
+                        'temperature' => 0.85,
+                        'max_tokens' => 100,
+                    ]);
+
+                    if ($openAiResponse->failed()) {
+                        Log::warning("OpenAI Chat failed for user {$user->id}: " . $openAiResponse->body());
+                        continue 2; // go to next user
+                    }
+
+                    $quoteText = trim($openAiResponse['choices'][0]['message']['content'] ?? '');
+                    if (empty($quoteText)) {
+                        Log::warning("Empty quote returned for user {$user->id}");
+                        continue 2;
+                    }
+
+                    // Check similarity with ALL quotes (not just this user’s)
+                    $allQuotes = Quote::where('user_id', $user->id)
+                        ->pluck('quote')
+                        ->map(function ($q) {
+                            return trim(Str::after($q, ','));
+                        });
+
+                    $isSimilar = $allQuotes->contains(function ($prev) use ($quoteText) {
+                        similar_text($prev, $quoteText, $percent);
+                        return $percent > 85;
+                    });
+
+                    if (!$isSimilar) {
+                        break; // Found a good quote
+                    }
+
+                    Log::info("Attempt #{$attempt}: Quote too similar for user {$user->id}. Retrying...");
+                    $quoteText = null;
                 }
 
-                $quoteText = trim($openAiResponse['choices'][0]['message']['content'] ?? '');
-                if (empty($quoteText)) {
-                    Log::warning("No quote content returned for user {$user->id}");
+                if (!$quoteText) {
+                    Log::warning("Max retries reached for user {$user->id}. Skipping.");
                     continue;
                 }
 
                 $quote = "{$greeting} {$quoteText}";
 
-                // 2. Generate Audio with OpenAI TTS
-                $voiceId = $user->voice?->model_id ?? 'onyx'; // ← Use related Voice model's `model_id`
-
+                // Generate Audio
+                $voiceId = $user->voice?->model_id ?? 'onyx';
                 $filename = "quote_{$user->id}_" . time() . ".mp3";
                 $relativePath = "assets/quotes/{$filename}";
                 $absolutePath = public_path($relativePath);
@@ -100,14 +158,14 @@ class QuoteGenerationController extends Controller
 
                 file_put_contents($absolutePath, $ttsResponse->body());
 
-                // 3. Save Quote to DB
+                // Save to DB
                 $quoteModel = Quote::create([
                     'user_id' => $user->id,
                     'quote' => $quote,
                     'audio_path' => $relativePath,
                 ]);
 
-                // 4. Send Email
+                // Send Email
                 Mail::to($user->email)->send(new DailyQuoteMail(
                     $user,
                     $quote,

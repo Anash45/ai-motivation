@@ -21,7 +21,7 @@
             </div>
 
             <!-- PayPal -->
-            <div class="col-md-6">
+            <div class="col-md-6 d-none">
                 <div class="card bg-dark text-white p-4 shadow rounded">
                     <h3 class="mb-3 text-center">Subscribe with PayPal</h3>
                     <p class="text-center mb-4">Use your PayPal account to subscribe.</p>
