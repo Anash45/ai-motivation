@@ -59,6 +59,7 @@ class RegisterController extends Controller
             ]);
 
             if ($request->plan_type === 'trial') {
+                Log::error(message: "Trial set.");
                 try {
                     // Send welcome email to user
                     Mail::to($user->email)->send(new TrialWelcomeMail($user));
@@ -84,6 +85,8 @@ class RegisterController extends Controller
 
                     // Continue with registration even if email fails
                 }
+            } else {
+                Log::error("Trial not set.");
             }
 
             Auth::login($user);
