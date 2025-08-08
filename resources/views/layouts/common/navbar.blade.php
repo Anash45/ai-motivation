@@ -5,7 +5,7 @@
                     If you use a PNG logo image, the image resolution must be equal 200% of the visible logo
                     image size for support of retina screens. See details in the template documentation. *) -->
         <div class="nav-logo-wrap local-scroll">
-            <a href="#top" class="logo">
+            <a href="/#top" class="logo">
                 <img src="{{asset("assets/images/logo-01.png")}}" alt="{{env('APP_NAME')}}" width="106" height="36" />
             </a>
         </div>
@@ -21,6 +21,7 @@
             <ul class="clearlist scroll-nav local-scroll">
                 <li><a href="/#home" class="active">Home</a></li>
                 <li><a href="/#about">About</a></li>
+                <li><a href="/#how-it-works">How It Works</a></li>
                 <li><a href="/#contact">Contact</a></li>
                 <li><a href="/#faqs">FAQs</a></li>
             </ul>

@@ -28,7 +28,7 @@
                 @if ($user->is_subscribed && $subscriptionEndsInFuture)
                     {{-- 1. Active Subscription --}}
                     <div class="alert alert-info p-2">
-                        You're subscribed. If you cancel, you'll still receive motivational quotes until
+                        You're subscribed. If you cancel, you'll still receive motivational messages until
                         <strong>{{ $subscriptionEnds }}</strong>.
                     </div>
 
@@ -58,7 +58,7 @@
                         You're currently on a <strong>free trial</strong>. It will end on
                         <strong>{{ $trialEnds }}</strong>.
                         <a href="{{ route('subscription.page') }}" class="fw-bold">Subscribe now</a> to keep receiving
-                        motivational quotes.
+                        motivational messages.
                     </div>
 
                 @elseif ($user->plan_type === 'trial' && !$trialValid && !$user->is_subscribed && $user->trial_ends_at)
@@ -74,7 +74,7 @@
                     <div class="alert alert-danger p-2">
                         You're currently not subscribed.
                         <a href="{{ route('subscription.checkout') }}" class="fw-bold">Subscribe now</a> to receive your daily
-                        motivational quotes.
+                        motivational messages.
                     </div>
 
                 @elseif ($user->is_subscribed && $subscriptionEndsInPast)
@@ -82,7 +82,7 @@
                     <div class="alert alert-warning p-2">
                         Your subscription expired on <strong>{{ $subscriptionEnds }}</strong>.
                         <a href="{{ route('subscription.checkout') }}" class="fw-bold">Renew now</a> to resume receiving daily
-                        motivational quotes.
+                        motivational messages.
                     </div>
                 @endif
 

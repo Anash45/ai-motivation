@@ -14,7 +14,7 @@ use App\Mail\DailyQuoteMail;
 class GenerateDailyQuotes extends Command
 {
     protected $signature = 'quotes:generate-daily';
-    protected $description = 'Generate daily motivational quotes and audio for subscribed/trial users';
+    protected $description = 'Generate daily motivational messages and audio for subscribed/trial users';
 
     public function handle()
     {

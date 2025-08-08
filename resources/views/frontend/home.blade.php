@@ -272,7 +272,7 @@
                         </div>
                         <h4 class="alt-features-title">AI-Crafted Quotes</h4>
                         <div class="alt-features-descr">
-                            Our AI blends psychology and personal insights to generate motivational quotes designed just for
+                            Our AI blends psychology and personal insights to generate motivational messages designed just for
                             you.
                         </div>
                     </div>
@@ -288,7 +288,7 @@
                         </div>
                         <h4 class="alt-features-title">Delivered Daily at 7 AM</h4>
                         <div class="alt-features-descr">
-                            Wake up to your custom quote — text and audio — sent straight to your inbox every morning at 7
+                            Wake up to your custom message — text and audio — sent straight to your inbox every morning at 7
                             AM.
                         </div>
                     </div>
@@ -423,7 +423,7 @@
                         </dt>
                         <dd class="black">
                             We use advanced AI trained on motivational psychology and your personal profile (age range,
-                            profession, interests) to generate unique, relevant quotes just for you.
+                            profession, interests) to generate unique, relevant messages just for you.
 
 
                         </dd>
@@ -440,14 +440,11 @@
                         </dd>
 
                         <dt>
-                            <a href="#">How are quotes delivered each day?
+                            <a href="#">How are messages delivered each day?
                             </a>
                         </dt>
                         <dd class="black">
-                            You'll get your daily quote via email, and it's also available in your dashboard.
-                            Notifications can be customized in your preferences.
-
-
+                            You'll get your daily messages via email, and it's also available in your dashboard.
                         </dd>
 
                         <dt>
@@ -456,7 +453,7 @@
                         </dt>
                         <dd class="black">
                             You'll be invited to subscribe via Stripe or PayPal. If you choose not to subscribe, your
-                            account will pause - but your profile and quote history will be saved.
+                            account will pause - but your profile will be saved.
 
 
                         </dd>

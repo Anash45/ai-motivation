@@ -13,6 +13,8 @@ use App\Models\Voice;
 use App\Mail\TrialWelcomeMail;
 use App\Mail\TrialSignupAlertMail;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Log;
+use Exception;
 
 class RegisterController extends Controller
 {
@@ -43,30 +45,65 @@ class RegisterController extends Controller
                 ->withInput();
         }
 
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'age_range' => $request->age_range,
-            'profession' => $request->profession,
-            'interests' => $request->interests,
-            'voice_id' => $request->voice_id, // ← include voice
-            'password' => bcrypt($request->password),
-            'plan_type' => $request->plan_type,
-            'trial_ends_at' => $request->plan_type === 'trial' ? now()->addDays(7) : null,
-        ]);
+        try {
+            $user = User::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'age_range' => $request->age_range,
+                'profession' => $request->profession,
+                'interests' => $request->interests,
+                'voice_id' => $request->voice_id,
+                'password' => bcrypt($request->password),
+                'plan_type' => $request->plan_type,
+                'trial_ends_at' => $request->plan_type === 'trial' ? now()->addDays(7) : null,
+            ]);
 
-        if ($request->plan_type === 'trial') {
-            Mail::to($user->email)->send(new TrialWelcomeMail($user));
-            Mail::to('alerts@vibeliftdaily.com')->send(new TrialSignupAlertMail($user));
+            if ($request->plan_type === 'trial') {
+                try {
+                    // Send welcome email to user
+                    Mail::to($user->email)->send(new TrialWelcomeMail($user));
+                    Log::channel('emails')->info('Trial welcome email sent successfully', [
+                        'user_id' => $user->id,
+                        'email' => $user->email,
+                        'type' => 'trial_welcome'
+                    ]);
+
+                    // Send alert email to admin
+                    Mail::to('alerts@vibeliftdaily.com')->send(new TrialSignupAlertMail($user));
+                    Log::channel('emails')->info('Trial signup alert email sent successfully', [
+                        'user_id' => $user->id,
+                        'type' => 'trial_alert'
+                    ]);
+
+                } catch (\Exception $emailException) {
+                    Log::channel('emails')->error('Failed to send trial emails', [
+                        'user_id' => $user->id,
+                        'error' => $emailException->getMessage(),
+                        'trace' => $emailException->getTraceAsString()
+                    ]);
+
+                    // Continue with registration even if email fails
+                }
+            }
+
+            Auth::login($user);
+
+            return $request->plan_type === 'subscribe'
+                ? redirect()->route('subscription.page')
+                : redirect()->route('dashboard')->with('success', 'Welcome! Your 7-day trial has started.');
+
+        } catch (\Exception $e) {
+            Log::error('User registration failed', [
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
+                'input' => $request->except(['password', 'password_confirmation'])
+            ]);
+
+            return redirect()
+                ->back()
+                ->with('error', 'Registration failed. Please try again.')
+                ->withInput();
         }
-
-        // event(new Registered($user)); // For email verification
-
-        Auth::login($user);
-
-        return $request->plan_type === 'subscribe'
-            ? redirect()->route('subscription.page')
-            : redirect()->route('dashboard')->with('success', 'Welcome! Your 7-day trial has started.');
     }
 
 
