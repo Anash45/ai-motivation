@@ -55,8 +55,8 @@ class RegisterController extends Controller
                 'interests' => $request->interests,
                 'voice_id' => $request->voice_id,
                 'password' => bcrypt($request->password),
-                'plan_type' => $request->plan_type,
-                'trial_ends_at' => $request->plan_type === 'trial' ? now()->addDays(7) : null,
+                'plan_type' => 'trial',
+                'trial_ends_at' => now()->addDays(7),
             ]);
 
             if ($request->plan_type === 'trial') {

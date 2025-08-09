@@ -8,7 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Notifications\Notifiable;
 use App\Notifications\VerifyEmail;
-
+use Carbon\Carbon;
 
 
 class User extends Authenticatable
@@ -78,17 +78,25 @@ class User extends Authenticatable
     {
         return $this->hasMany(Quote::class);
     }
-    public function isOnTrial(): bool
+
+    public function isOnTrial()
     {
-        return $this->plan_type === 'trial' && $this->trial_ends_at && now()->lessThan($this->trial_ends_at);
+        return $this->plan_type === 'trial';
     }
 
-    /**
-     * Determine if the user is currently subscribed.
-     */
-    public function isSubscribed(): bool
+    public function isSubscribed()
     {
-        return $this->is_subscribed && $this->subscription_ends_at && now()->lessThan($this->subscription_ends_at);
+        return $this->plan_type === 'subscribe'
+            && $this->is_subscribed == 1
+            && Carbon::parse($this->subscription_ends_at)->isFuture();
+    }
+
+    public function isCancelled()
+    {
+        return $this->plan_type !== 'subscribe'
+            && $this->subscription_ends_at !== null 
+            && now()->lessThanOrEqualTo($this->subscription_ends_at)
+            && $this->is_subscribed == 1;
     }
 
     /**
@@ -96,7 +104,10 @@ class User extends Authenticatable
      */
     public function hasExpiredSubscription(): bool
     {
-        return $this->subscription_ends_at && now()->greaterThanOrEqualTo($this->subscription_ends_at);
+        return $this->plan_type === 'subscribe'
+            && $this->is_subscribed == 1
+            && $this->subscription_ends_at !== null 
+            && now()->greaterThan($this->subscription_ends_at);
     }
 
     public function voice()

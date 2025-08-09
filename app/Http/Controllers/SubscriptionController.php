@@ -101,6 +101,8 @@ class SubscriptionController extends Controller
                 'cancel_at_period_end' => true,
             ]);
 
+            $user->plan_type = null;
+            $user->save();
 
             return redirect()->route('user.dashboard')->with(
                 'success',

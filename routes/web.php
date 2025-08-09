@@ -10,6 +10,8 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\OpenAIQuoteController;
 use App\Http\Controllers\TrialReminderController;
+use App\Http\Controllers\Admin\AdminDashboardController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\Frontend\Auth\LoginController as UserLogin;
 use App\Http\Controllers\Frontend\Auth\RegisterController as UserRegister;
 use App\Http\Controllers\QuoteGenerationController;
@@ -52,7 +54,7 @@ Route::get('/generate-quote/{user}', [OpenAIQuoteController::class, 'generate'])
 
 Route::get('/', function () {
     return view('frontend.home');
-});
+})->name('home');
 
 Route::get('/terms-and-conditions', function () {
     return view('frontend.tos');
@@ -105,8 +107,20 @@ Route::get('/dashboard', function () {
         return redirect()->route('user.dashboard');
     }
 
-    return view('dashboard'); // your admin dashboard view
+    return app(AdminDashboardController::class)->index(request());
+
 })->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::middleware(['auth', 'admin'])->group(function () {
+    Route::get('/admin/users', [UserController::class, 'index'])->name('admin.users.index');
+    Route::delete('/admin/users/{id}', [UserController::class, 'destroy'])->name('admin.users.destroy');
+    Route::get('/admin/users/{id}/edit', [UserController::class, 'edit'])->name('admin.users.edit');
+    Route::put('/admin/users/{id}', [UserController::class, 'update'])->name('admin.users.update');
+});
+
+Route::get('/admin/quotes', [AdminDashboardController::class, 'quotes'])
+    ->middleware(['auth', 'admin'])
+    ->name('admin.quotes.index');
 
 
 Route::middleware('auth')->group(function () {
