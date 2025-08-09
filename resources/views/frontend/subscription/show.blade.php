@@ -35,4 +35,25 @@
             </div>
         </div>
     </div>
+    <div id="paypal-button-container-P-3FT002174V252551DNCL32NA"></div>
+<script src="https://www.paypal.com/sdk/js?client-id=AfDByHi21f0F_LE1hb6O1ygtwaiwxuFlUvP1lwrZSlR3AeSxRV80vssVyqI3w30I2OkZA7TvfcHPsFjY&vault=true&intent=subscription" data-sdk-integration-source="button-factory"></script>
+<script>
+  paypal.Buttons({
+      style: {
+          shape: 'rect',
+          color: 'gold',
+          layout: 'vertical',
+          label: 'subscribe'
+      },
+      createSubscription: function(data, actions) {
+        return actions.subscription.create({
+          /* Creates the subscription */
+          plan_id: 'P-3FT002174V252551DNCL32NA'
+        });
+      },
+      onApprove: function(data, actions) {
+        alert(data.subscriptionID); // You can add optional success message for the subscriber here
+      }
+  }).render('#paypal-button-container-P-3FT002174V252551DNCL32NA'); // Renders the PayPal button
+</script>
 @endsection
