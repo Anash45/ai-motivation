@@ -116,112 +116,49 @@ class SubscriptionController extends Controller
         }
     }
 
-    private function paypalClient()
+    public function paypalApprove(Request $request)
     {
-        $env = config('services.paypal.mode') === 'live'
-            ? new \PayPalCheckoutSdk\Core\ProductionEnvironment(
-                config('services.paypal.client_id'),
-                config('services.paypal.secret')
-            )
-            : new SandboxEnvironment(
-                config('services.paypal.client_id'),
-                config('services.paypal.secret')
-            );
-
-        return new PayPalHttpClient($env);
-    }
-    
-    private function getPayPalAccessToken()
-    {
-        $response = Http::asForm()->withBasicAuth(
-            config('services.paypal.client_id'),
-            config('services.paypal.secret')
-        )->post(
-                config('services.paypal.mode') === 'live'
-                ? 'https://api-m.paypal.com/v1/oauth2/token'
-                : 'https://api-m.sandbox.paypal.com/v1/oauth2/token',
-                [
-                    'grant_type' => 'client_credentials',
-                ]
-            );
-
-        if (!$response->successful()) {
-            throw new \Exception('Unable to get PayPal access token.');
-        }
-
-        return $response->json()['access_token'];
-    }
-
-    public function startPaypalSubscription()
-    {
-        $accessToken = $this->getPayPalAccessToken();
-
-        $response = Http::withToken($accessToken)->post(config('services.paypal.mode') === 'live'
-            ? 'https://api-m.paypal.com/v1/billing/subscriptions'
-            : 'https://api-m.sandbox.paypal.com/v1/billing/subscriptions', [
-            'plan_id' => 'YOUR_PAYPAL_PLAN_ID',
-            'application_context' => [
-                'brand_name' => 'Your Brand Name',
-                'locale' => 'en-US',
-                'shipping_preference' => 'NO_SHIPPING',
-                'user_action' => 'SUBSCRIBE_NOW',
-                'return_url' => route('subscription.paypal.approve'),
-                'cancel_url' => route('subscription.paypal.cancel'),
-            ]
+        $request->validate([
+            'subscription_id' => 'required|string'
         ]);
 
-        if (!$response->successful()) {
-            \Log::error('PayPal subscription creation failed:', $response->json());
-            return redirect()->route('subscription.page')->with('error', 'Failed to create PayPal subscription.');
-        }
-
-        $links = collect($response->json()['links']);
-        $approveLink = $links->firstWhere('rel', 'approve')['href'] ?? null;
-
-        if (!$approveLink) {
-            return redirect()->route('subscription.page')->with('error', 'Approval link not found.');
-        }
-
-        return redirect()->away($approveLink);
-    }
-
-
-    public function approvePaypalSubscription(Request $request)
-    {
-        $subscriptionId = $request->get('subscription_id');
-        $accessToken = $this->getPayPalAccessToken();
         $user = Auth::user();
 
-        $response = Http::withToken($accessToken)->get(config('services.paypal.mode') === 'live'
-            ? "https://api-m.paypal.com/v1/billing/subscriptions/{$subscriptionId}"
-            : "https://api-m.sandbox.paypal.com/v1/billing/subscriptions/{$subscriptionId}");
+        // 1️⃣ Optional: Validate subscription with PayPal API
+        $paypalAccessToken = $this->getPaypalAccessToken();
+        $response = Http::withToken($paypalAccessToken)
+            ->get("https://api-m.sandbox.paypal.com/v1/billing/subscriptions/{$request->subscription_id}");
 
         if (!$response->successful()) {
-            \Log::error('PayPal get subscription failed:', $response->json());
-            return redirect()->route('subscription.page')->with('error', 'Unable to retrieve subscription.');
+            return response()->json(['success' => false, 'message' => 'Unable to verify subscription'], 422);
         }
 
-        $data = $response->json();
+        $subscriptionData = $response->json();
 
-        if ($data['status'] === 'ACTIVE') {
-            $user->update([
-                'paypal_subscription_id' => $subscriptionId,
-                'paypal_plan_id' => $data['plan_id'] ?? null,
-                'paypal_status' => $data['status'],
-                'is_subscribed' => true,
-                'plan_type' => 'paypal',
-                'subscription_ends_at' => now()->addMonth(), // adjust if using billing_cycle_anchor
-            ]);
+        // 2️⃣ Update user record
+        $user->update([
+            'paypal_subscription_id' => $subscriptionData['id'],
+            'paypal_plan_id' => $subscriptionData['plan_id'],
+            'paypal_status' => $subscriptionData['status'],
+            'is_subscribed' => $subscriptionData['status'] === 'ACTIVE',
+            'subscription_ends_at' => isset($subscriptionData['billing_info']['next_billing_time'])
+                ? $subscriptionData['billing_info']['next_billing_time']
+                : null
+        ]);
 
-            return view('frontend.subscription.success');
-        }
-
-        return redirect()->route('subscription.page')->with('error', 'Subscription is not active.');
+        return response()->json(['success' => true]);
     }
 
-
-    public function cancelPaypalSubscription()
+    private function getPaypalAccessToken()
     {
-        return redirect()->route('subscription.page')->with('error', 'You cancelled the PayPal subscription.');
+        $clientId = config('services.paypal.client_id');
+        $secret = config('services.paypal.secret');
+
+        $response = Http::asForm()->withBasicAuth($clientId, $secret)
+            ->post('https://api-m.sandbox.paypal.com/v1/oauth2/token', [
+                'grant_type' => 'client_credentials'
+            ]);
+
+        return $response->json()['access_token'];
     }
 }
