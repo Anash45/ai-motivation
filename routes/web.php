@@ -10,6 +10,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\OpenAIQuoteController;
 use App\Http\Controllers\TrialReminderController;
+use App\Http\Controllers\StripeWebhookController;
 use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\Frontend\Auth\LoginController as UserLogin;
@@ -46,7 +47,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/subscribe/paypal', [SubscriptionController::class, 'startPaypalSubscription'])->name('subscription.paypal.start');
     Route::get('/subscribe/paypal/approve', [SubscriptionController::class, 'approvePaypalSubscription'])->name('subscription.paypal.approve');
     Route::get('/subscribe/paypal/cancel', [SubscriptionController::class, 'cancelPaypalSubscription'])->name('subscription.paypal.cancel');
-
+    Route::post('/stripe/webhook', [StripeWebhookController::class, 'handleWebhook']);
 });
 Route::post('/email-subscribe', [SubscriberController::class, 'subscribe'])->name('subscribe');
 Route::get('/quote/{uuid}', [OpenAIQuoteController::class, 'show'])->name('quotes.show');

@@ -64,15 +64,21 @@
 
                         <ul class="fw-menu clearlist">
                             <li>
-                                <a href="#" rel="noopener nofollow" target="_blank">
+                                <a href="https://x.com/thevibelifthub?s=21&t=owzLPYfC9VBQzIdg9m862w" rel="noopener nofollow" target="_blank">
                                     <i class="fa-x-twitter" aria-hidden="true"></i>
                                     Twitter X
                                 </a>
                             </li>
                             <li>
-                                <a href="#" rel="noopener nofollow" target="_blank">
+                                <a href="https://www.instagram.com/thevibelifthub?igsh=MXRoMm1peHVqbTE0Yg%3D%3D&utm_source=qr" rel="noopener nofollow" target="_blank">
                                     <i class="fa-instagram" aria-hidden="true"></i>
                                     Instagram
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://www.facebook.com/share/1EcA7pJ4a2/?mibextid=wwXIfr" rel="noopener nofollow" target="_blank">
+                                    <i class="fa-facebook" aria-hidden="true"></i>
+                                    Facebook
                                 </a>
                             </li>
                         </ul>
