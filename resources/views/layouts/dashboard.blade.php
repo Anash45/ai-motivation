@@ -70,7 +70,14 @@
                                 Quotes
                             </a>
                         </li>
-                        <hr class="bg-white d-xl-none d-block">
+                        <hr class="bg-white">
+                        <li class="nav-item">
+                            <a class="nav-link"
+                                href="{{ route('home') }}">
+                                <i class="fa fa-home"></i>
+                                Home
+                            </a>
+                        </li>
                         <li class="nav-item d-xl-none d-block">
                             <form action="{{ route('logout') }}" method="post">
                                 <span class="nav-link" href="{{ route('logout') }}">

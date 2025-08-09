@@ -52,6 +52,11 @@
                 @auth
                     {{-- Logged in: show Dashboard & Logout --}}
                     <li class="pb-1">
+                        <a href="{{ route('dashboard') }}" class="opacity-1 no-hover">
+                            <span class="link-hover-anim underline" data-link-animate="y">Admin Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="pb-1">
                         <a href="{{ route('user.dashboard') }}" class="opacity-1 no-hover">
                             <span class="link-hover-anim underline" data-link-animate="y">My Dashboard</span>
                         </a>
