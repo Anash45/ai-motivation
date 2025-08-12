@@ -65,19 +65,19 @@
                         <ul class="fw-menu clearlist">
                             <li>
                                 <a href="https://x.com/thevibelifthub?s=21&t=owzLPYfC9VBQzIdg9m862w" rel="noopener nofollow" target="_blank">
-                                    <i class="fa-x-twitter" aria-hidden="true"></i>
+                                    <i class="fa-brands fa-x-twitter" aria-hidden="true"></i>
                                     Twitter X
                                 </a>
                             </li>
                             <li>
                                 <a href="https://www.instagram.com/thevibelifthub?igsh=MXRoMm1peHVqbTE0Yg%3D%3D&utm_source=qr" rel="noopener nofollow" target="_blank">
-                                    <i class="fa-instagram" aria-hidden="true"></i>
+                                    <i class="fa-brands fa-instagram" aria-hidden="true"></i>
                                     Instagram
                                 </a>
                             </li>
                             <li>
                                 <a href="https://www.facebook.com/share/1EcA7pJ4a2/?mibextid=wwXIfr" rel="noopener nofollow" target="_blank">
-                                    <i class="fa-facebook" aria-hidden="true"></i>
+                                    <i class="fa-brands fa-facebook" aria-hidden="true"></i>
                                     Facebook
                                 </a>
                             </li>
@@ -99,8 +99,6 @@
             </div>
 
             <div class="col-md-7 offset-md-1 offset-lg-2 clearfix">
-
-                <b>Based in London, United Kingdom.</b>
 
                 <!-- Back to Top Link -->
                 <div class="local-scroll float-end mt-n20 mt-sm-10">
