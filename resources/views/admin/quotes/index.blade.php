@@ -54,10 +54,11 @@
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script>
         $(document).ready(function () {
-            $('#quotes-table').DataTable({
-                pageLength: 25,
-                lengthMenu: [10, 25, 50, 100]
-            });
-        });
+    $('#quotes-table').DataTable({
+        pageLength: 25,
+        lengthMenu: [10, 25, 50, 100],
+        order: [] // disables initial sorting
+    });
+});
     </script>
 @endpush
