@@ -116,49 +116,5 @@ class SubscriptionController extends Controller
         }
     }
 
-    public function paypalApprove(Request $request)
-    {
-        $request->validate([
-            'subscription_id' => 'required|string'
-        ]);
-
-        $user = Auth::user();
-
-        // 1️⃣ Optional: Validate subscription with PayPal API
-        $paypalAccessToken = $this->getPaypalAccessToken();
-        $response = Http::withToken($paypalAccessToken)
-            ->get("https://api-m.sandbox.paypal.com/v1/billing/subscriptions/{$request->subscription_id}");
-
-        if (!$response->successful()) {
-            return response()->json(['success' => false, 'message' => 'Unable to verify subscription'], 422);
-        }
-
-        $subscriptionData = $response->json();
-
-        // 2️⃣ Update user record
-        $user->update([
-            'paypal_subscription_id' => $subscriptionData['id'],
-            'paypal_plan_id' => $subscriptionData['plan_id'],
-            'paypal_status' => $subscriptionData['status'],
-            'is_subscribed' => $subscriptionData['status'] === 'ACTIVE',
-            'subscription_ends_at' => isset($subscriptionData['billing_info']['next_billing_time'])
-                ? $subscriptionData['billing_info']['next_billing_time']
-                : null
-        ]);
-
-        return response()->json(['success' => true]);
-    }
-
-    private function getPaypalAccessToken()
-    {
-        $clientId = config('services.paypal.client_id');
-        $secret = config('services.paypal.secret');
-
-        $response = Http::asForm()->withBasicAuth($clientId, $secret)
-            ->post('https://api-m.sandbox.paypal.com/v1/oauth2/token', [
-                'grant_type' => 'client_credentials'
-            ]);
-
-        return $response->json()['access_token'];
-    }
+    
 }
