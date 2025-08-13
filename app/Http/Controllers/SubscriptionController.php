@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Models\User;
 use Illuminate\Support\Facades\Log;
 
 use Illuminate\Http\Request;
@@ -116,5 +117,90 @@ class SubscriptionController extends Controller
         }
     }
 
-    
+    public function syncSubscriptionStatus(User $user)
+    {
+        Log::info("Starting subscription sync for user ID: {$user->id}");
+
+        // Set your Stripe API key
+        Stripe::setApiKey(config('services.stripe.secret'));
+        Log::info("Stripe API key set.");
+
+        if (!$user->stripe_subscription_id) {
+            Log::warning("No subscription ID found for user ID: {$user->id}");
+            return response()->json(['message' => 'No subscription ID found'], 404);
+        }
+
+        try {
+            Log::info("Retrieving subscription from Stripe for subscription ID: {$user->stripe_subscription_id}");
+
+            // Retrieve subscription from Stripe
+            $subscription = StripeSubscription::retrieve($user->stripe_subscription_id);
+            Log::info("Stripe subscription retrieved successfully.", [
+                'subscription_status' => $subscription->status,
+                'current_period_end' => $subscription->current_period_end
+            ]);
+
+            // Get status
+            $status = $subscription->status; // 'active', 'past_due', 'canceled', 'incomplete', etc.
+            $endsAt = $subscription->current_period_end
+                ? Carbon::createFromTimestamp($subscription->current_period_end)
+                : null;
+
+            Log::info("Parsed subscription status for user ID {$user->id}: {$status}");
+            if ($endsAt) {
+                Log::info("Subscription ends at: {$endsAt}");
+            }
+
+            // Update user in DB
+            $user->update([
+                'plan_type' => $status === 'active' ? 'subscribe' : null,
+                'is_subscribed' => $status === 'active',
+                'subscription_ends_at' => $endsAt,
+            ]);
+
+            Log::info("User subscription status updated in DB.", [
+                'user_id' => $user->id,
+                'new_status' => $status,
+                'ends_at' => $endsAt
+            ]);
+
+            return response()->json([
+                'message' => 'Subscription status synced successfully',
+                'status' => $status,
+                'ends_at' => $endsAt
+            ]);
+        } catch (\Exception $e) {
+            Log::error("Error syncing subscription for user ID {$user->id}: " . $e->getMessage());
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+    }
+
+    public function syncAllSubscriptions()
+    {
+        Log::info("Starting bulk subscription sync for all users...");
+
+        $users = User::whereNotNull('stripe_subscription_id')->get();
+        Log::info("Found {$users->count()} users with subscription IDs.");
+
+        $results = [];
+
+        foreach ($users as $user) {
+            Log::info("Syncing subscription for user ID: {$user->id}");
+            $response = $this->syncSubscriptionStatus($user); // Reuse your existing method
+            $results[] = [
+                'user_id' => $user->id,
+                'email' => $user->email,
+                'status' => json_decode($response->getContent(), true)
+            ];
+        }
+
+        Log::info("Bulk subscription sync completed.");
+
+        return response()->json([
+            'message' => 'All subscriptions synced successfully',
+            'results' => $results
+        ]);
+    }
+
+
 }

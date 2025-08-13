@@ -24,6 +24,7 @@ Route::get('/server-time', function () {
 Route::get('/send-trial-reminders', [TrialReminderController::class, 'sendTrialEndingReminders']);
 
 
+Route::get('/sync-all-subscriptions', [SubscriptionController::class, 'syncAllSubscriptions']);
 Route::get('/run-daily-quotes', function () {
     // Call the controller method directly
     return app(QuoteGenerationController::class)->generate();
