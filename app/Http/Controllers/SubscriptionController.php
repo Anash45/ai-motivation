@@ -142,8 +142,11 @@ class SubscriptionController extends Controller
 
             // Get status
             $status = $subscription->status; // 'active', 'past_due', 'canceled', 'incomplete', etc.
-            $endsAt = $subscription->current_period_end
-                ? Carbon::createFromTimestamp($subscription->current_period_end)
+            $periodEnd = $subscription->current_period_end
+                ?? ($subscription->items->data[0]->current_period_end ?? null);
+
+            $endsAt = $periodEnd
+                ? Carbon::createFromTimestamp($periodEnd)
                 : null;
 
             Log::info("Parsed subscription status for user ID {$user->id}: {$status}");
