@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\CronJobLog;
 use App\Models\User;
 use App\Models\Quote;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
@@ -15,6 +17,19 @@ class QuoteGenerationController extends Controller
 {
     public function generate()
     {
+        $jobKey = 'daily_quote_generation';
+
+        // ✅ Check if job already ran today
+        $alreadyRan = CronJobLog::where('job_key', $jobKey)
+            ->where('status', 'success')
+            ->whereDate('ran_at', Carbon::today())
+            ->exists();
+
+        if ($alreadyRan) {
+            Log::info("{$jobKey} has already run today. Skipping execution.");
+            return response()->json(['message' => 'Job already ran today. Skipping.']);
+        }
+
         Log::warning("Starting daily quote generation (via web route)");
 
         $users = User::where(function ($query) {
@@ -114,7 +129,7 @@ class QuoteGenerationController extends Controller
 
                     $isSimilar = $allQuotes->contains(function ($prev) use ($quoteText) {
                         similar_text($prev, $quoteText, $percent);
-                        return $percent > 60;
+                        return $percent > 70;
                     });
 
                     if (!$isSimilar) {
@@ -184,6 +199,14 @@ class QuoteGenerationController extends Controller
 
 
         Log::warning("Daily quote generation complete.");
+
+        // ✅ Log job run after completion
+        CronJobLog::create([
+            'job_key' => $jobKey,
+            'status' => 'success',
+            'ran_at' => now(),
+        ]);
+
         return response()->json(['message' => 'Quote generation completed']);
     }
 }
