@@ -10,7 +10,7 @@
                         height="36" />
                 </div>
 
-                <p>
+                <!-- <p>
                     Integer auctor aliquet martor, sed lorem malesuada eros blandit eget. Proin lacinia mortoc id odio
                     vestibulum.
                 </p>
@@ -21,7 +21,7 @@
 
                 <div class="clearlinks">
                     <strong>E.</strong> <a href="mailto:support@bestlooker.pro">support@bestlooker.pro</a>
-                </div>
+                </div> -->
 
             </div>
 
