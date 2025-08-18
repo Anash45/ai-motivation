@@ -38,6 +38,7 @@ class User extends Authenticatable
         'paypal_subscription_id',
         'paypal_plan_id',
         'paypal_status',
+        'timezone',
     ];
 
 
@@ -94,7 +95,7 @@ class User extends Authenticatable
     public function isCancelled()
     {
         return $this->plan_type !== 'subscribe'
-            && $this->subscription_ends_at !== null 
+            && $this->subscription_ends_at !== null
             && now()->lessThanOrEqualTo($this->subscription_ends_at)
             && $this->is_subscribed == 1;
     }
@@ -106,7 +107,7 @@ class User extends Authenticatable
     {
         return $this->plan_type === 'subscribe'
             && $this->is_subscribed == 1
-            && $this->subscription_ends_at !== null 
+            && $this->subscription_ends_at !== null
             && now()->greaterThan($this->subscription_ends_at);
     }
 

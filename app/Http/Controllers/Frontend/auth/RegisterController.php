@@ -37,6 +37,7 @@ class RegisterController extends Controller
             'voice_id' => 'required|exists:voices,id',
             'password' => 'required|string|min:6|confirmed',
             'plan_type' => 'required|in:trial,subscribe',
+            'timezone' => 'nullable|string',
         ]);
 
         if ($validator->fails()) {
@@ -57,6 +58,7 @@ class RegisterController extends Controller
                 'password' => bcrypt($request->password),
                 'plan_type' => 'trial',
                 'trial_ends_at' => now()->addDays(7),
+                'timezone' => $request->timezone ?? 'Europe/London',
             ]);
 
             if ($request->plan_type === 'trial') {

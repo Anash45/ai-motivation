@@ -6,6 +6,7 @@ use App\Models\CronJobLog;
 use App\Models\User;
 use App\Models\Quote;
 use Carbon\Carbon;
+use Carbon\CarbonTimeZone;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
@@ -15,20 +16,58 @@ use Illuminate\Support\Str;
 
 class QuoteGenerationController extends Controller
 {
+    public function filterUsers()
+    {
+        $users = User::where(function ($query) {
+            $query->where('is_subscribed', true)
+                ->orWhere(function ($q) {
+                    $q->where('plan_type', 'trial')
+                        ->where('trial_ends_at', '>', now());
+                })
+                ->orWhere(function ($q) {
+                    $q->where('is_subscribed', false)
+                        ->whereNotNull('subscription_ends_at')
+                        ->where('subscription_ends_at', '>', now());
+                });
+        })
+            ->get()
+            ->filter(function ($user) {
+                $timezone = $user->timezone ?: 'Europe/London';
+                $now = Carbon::now(new CarbonTimeZone($timezone));
+
+                // Target = 7:00 AM local time (you had 6:20, adjust as needed)
+                $target = $now->copy()->setTime(7, 0);
+
+                // Check if within ± 5 minutes
+                $withinWindow = $now->between(
+                    $target->copy()->subMinutes(5),
+                    $target->copy()->addMinutes(5)
+                );
+
+                if (!$withinWindow) {
+                    return false;
+                }
+
+                // Get today's local start & end in UTC for DB check
+                $startOfDayUtc = $now->copy()->startOfDay()->setTimezone('UTC');
+                $endOfDayUtc = $now->copy()->endOfDay()->setTimezone('UTC');
+
+                // Has this user already received a quote today?
+                $alreadySent = Quote::where('user_id', $user->id)
+                    ->whereBetween('created_at', [$startOfDayUtc, $endOfDayUtc])
+                    ->exists();
+
+                return !$alreadySent;
+            })
+            ->values();
+
+        return response()->json($users);
+    }
     public function generate()
     {
         $jobKey = 'daily_quote_generation';
 
         // ✅ Check if job already ran today
-        $alreadyRan = CronJobLog::where('job_key', $jobKey)
-            ->where('status', 'success')
-            ->whereDate('ran_at', Carbon::today())
-            ->exists();
-
-        if ($alreadyRan) {
-            Log::info("{$jobKey} has already run today. Skipping execution.");
-            return response()->json(['message' => 'Job already ran today. Skipping.']);
-        }
 
         Log::warning("Starting daily quote generation (via web route)");
 
@@ -43,7 +82,37 @@ class QuoteGenerationController extends Controller
                         ->whereNotNull('subscription_ends_at')
                         ->where('subscription_ends_at', '>', now());
                 });
-        })->get();
+        })
+            ->get()
+            ->filter(function ($user) {
+                $timezone = $user->timezone ?: 'Europe/London';
+                $now = Carbon::now(new CarbonTimeZone($timezone));
+
+                // Target = 7:00 AM local time (you had 6:20, adjust as needed)
+                $target = $now->copy()->setTime(7, 0);
+
+                // Check if within ± 5 minutes
+                $withinWindow = $now->between(
+                    $target->copy()->subMinutes(5),
+                    $target->copy()->addMinutes(5)
+                );
+
+                if (!$withinWindow) {
+                    return false;
+                }
+
+                // Get today's local start & end in UTC for DB check
+                $startOfDayUtc = $now->copy()->startOfDay()->setTimezone('UTC');
+                $endOfDayUtc = $now->copy()->endOfDay()->setTimezone('UTC');
+
+                // Has this user already received a quote today?
+                $alreadySent = Quote::where('user_id', $user->id)
+                    ->whereBetween('created_at', [$startOfDayUtc, $endOfDayUtc])
+                    ->exists();
+
+                return !$alreadySent;
+            })
+            ->values();
 
         $themes = [
             'resilience',

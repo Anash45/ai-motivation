@@ -30,6 +30,11 @@ Route::get('/run-daily-quotes', function () {
     return app(QuoteGenerationController::class)->generate();
 });
 
+Route::get('/filterUsers', function () {
+    // Call the controller method directly
+    return app(QuoteGenerationController::class)->filterUsers();
+});
+
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/my-dashboard', [DashboardController::class, 'updateProfile'])->name('dashboard.update');

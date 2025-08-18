@@ -16,6 +16,7 @@
                                     action="{{ route('user.register') }}">
                                     @csrf
 
+                                    <input type="hidden" name="timezone" id="timezone_inp">
                                     <div class="form-group">
                                         <label for="name" class="visually-hidden">Name <span class="text-danger">*</span></label>
                                         <input type="text" name="name" id="name" class="input-lg input-circle form-control"
@@ -123,4 +124,9 @@
             </div>
         </div>
     </section>
+    <script>
+        const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+        document.getElementById('timezone_inp').value = timezone;
+        console.log(timezone);
+    </script>
 @endsection
