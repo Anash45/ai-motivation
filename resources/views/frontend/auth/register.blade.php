@@ -18,9 +18,9 @@
 
                                     <input type="hidden" name="timezone" id="timezone_inp">
                                     <div class="form-group">
-                                        <label for="name" class="visually-hidden">Name <span class="text-danger">*</span></label>
+                                        <label for="name" class="visually-hidden">First Name <span class="text-danger">*</span></label>
                                         <input type="text" name="name" id="name" class="input-lg input-circle form-control"
-                                            placeholder="Name *" pattern=".{3,100}" required aria-required="true"
+                                            placeholder="First Name *" pattern=".{3,100}" required aria-required="true"
                                             value="{{ old('name') }}">
                                     </div>
 

@@ -93,7 +93,7 @@
                     @csrf
 
                     <div class="mb-3">
-                        <label class="form-label">Name <span class="text-danger">*</span></label>
+                        <label class="form-label">First Name <span class="text-danger">*</span></label>
                         <input name="name" type="text" value="{{ old('name', $user->name) }}"
                             class="form-control bg-secondary text-white" required>
                     </div>
