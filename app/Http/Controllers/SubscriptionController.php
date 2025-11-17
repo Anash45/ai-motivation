@@ -40,6 +40,10 @@ class SubscriptionController extends Controller
                 ]
             ],
             'customer_email' => auth()->user()->email,
+
+            // 👇 This enables the "Add promotion code" field
+            'allow_promotion_codes' => true,
+
             'success_url' => route('subscription.success') . '?session_id={CHECKOUT_SESSION_ID}',
             'cancel_url' => route('subscription.cancel'),
         ]);
